@@ -1,5 +1,3 @@
-local menu_items = vim.g.context_menu_config.menu_items
-
 local M = {}
 
 ---@class ContextMenu.Context
@@ -71,7 +69,7 @@ local function trigger_action(context)
 	local result = parse_cmd(line)
 
 	local callback
-	for _, item in ipairs(menu_items) do
+	for _, item in ipairs(vim.g.context_menu_config.menu_items) do
 		if result.cmd == item.cmd then
 			callback = item.callback
 		end
@@ -162,7 +160,7 @@ function M.trigger_context_menu()
 		ft = vim.bo.filetype,
 	}
 
-	local filtered_items = filter_items(menu_items, context)
+	local filtered_items = filter_items(vim.g.context_menu_config.menu_items, context)
 	local created = menu_popup_window(filtered_items)
 	context.menu_buffer = created.buf
 	context.menu_window = created.win

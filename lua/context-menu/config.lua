@@ -67,13 +67,25 @@ local menu_items = {
 		end,
 	},
 }
-vim.g.context_menu_config = {
-	menu_items = menu_items,
+
+local default_config = {
+	menu_items = menu_items, -- override the default items:: use it when you don't want the plugin provided menu_items
+	add_menu_items = {},
 }
 
 M.setup = function(opts)
 	opts = opts or {}
-	vim.g.context_menu_config = vim.tbl_extend("force", vim.g.context_menu_config, opts)
+	-- 确保 config 是 default_config 的独立副本
+	local config = vim.deepcopy(default_config)
+	config = vim.tbl_extend("force", config, opts)
+
+	if opts.add_menu_items and #opts.add_menu_items > 0 then
+		for _, item in ipairs(opts.add_menu_items) do
+			table.insert(config.menu_items, item)
+		end
+	end
+
+	vim.g.context_menu_config = config
 end
 
 return M
