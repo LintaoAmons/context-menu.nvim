@@ -9,11 +9,11 @@ local function menu_item_routine(func, context)
 end
 
 ---@class ContextMenu.Item
----@field cmd string
----@field ft? string[]
----@field not_ft? string[]
----@field order? number
----@field callback function(ContextMenu.Context): nil
+---@field cmd string Unique identifier and display name for the menu item.
+---@field ft? string[] Optional list of filetypes that determine menu item visibility.
+---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
+---@field order? number Optional numerical order for menu item sorting.
+---@field callback fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
 local menu_items = {
 	{
 		order = 1,
@@ -24,35 +24,10 @@ local menu_items = {
 		end,
 	},
 	{
-		cmd = "toggle_view",
-		ft = { "markdown" },
-		callback = function(_)
-			if vim.opt.conceallevel == 2 then
-				vim.opt.conceallevel = 0
-			else
-				vim.opt.conceallevel = 2
-			end
-
-			vim.cmd([[Markview]])
-		end,
-	},
-	{
 		cmd = "run_test",
 		ft = { "js" },
 		callback = function(context)
 			menu_item_routine(require("neotest").run.run, context)
-		end,
-	},
-	{
-		cmd = "run_as_cmd",
-		ft = { "sh" },
-		callback = function(context)
-			menu_item_routine(function()
-				local stdout = vim.fn.system(context.line)
-				local lines = require("util.base.strings").split_into_lines(stdout)
-				vim.api.nvim_set_current_buf(context.buffer)
-				vim.api.nvim_put(lines, "l", true, true)
-			end, context)
 		end,
 	},
 }
