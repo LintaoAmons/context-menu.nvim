@@ -7,4 +7,5 @@
 
 TODO:
 
+- [ ] beautify menu buffer
 - [ ] Example of how to config in multiple file using lazy.vim

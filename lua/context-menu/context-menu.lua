@@ -36,13 +36,13 @@ local function get_width(items)
 	return vim.fn.strdisplaywidth(table.concat(cmds, "\n")) + 3
 end
 
----@param popup_content ContextMenu.Item[]
+---@param menu_options ContextMenu.Item[]
 ---@return {buf: integer, win: integer}
-local function menu_popup_window(popup_content)
+local function menu_popup_window(menu_options)
 	local popup_buf = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, add_line_number(popup_content))
-	local width = get_width(popup_content)
-	local height = #popup_content
+	vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, add_line_number(menu_options))
+	local width = get_width(menu_options)
+	local height = #menu_options
 
 	local opts = {
 		relative = "cursor",
@@ -151,6 +151,14 @@ local function filter_items(items, context)
 	return filter_by_not_ft
 end
 
+---order menu_items by the their order field value
+---@param menu_items ContextMenu.Item[]
+local function reorder_items(menu_items)
+	table.sort(menu_items, function(a, b)
+		return a.order < b.order
+	end)
+end
+
 function M.trigger_context_menu()
 	---@type ContextMenu.Context
 	local context = {
@@ -161,6 +169,8 @@ function M.trigger_context_menu()
 	}
 
 	local filtered_items = filter_items(vim.g.context_menu_config.menu_items, context)
+	reorder_items(filtered_items)
+	-- TODO: reorder the items by the order fields
 	local created = menu_popup_window(filtered_items)
 	context.menu_buffer = created.buf
 	context.menu_window = created.win

@@ -12,11 +12,13 @@ end
 ---@field cmd string
 ---@field ft? string[]
 ---@field not_ft? string[]
+---@field order? number
 ---@field callback function(ContextMenu.Context): nil
 local menu_items = {
 	{
 		cmd = "run_file",
 		not_ft = { "markdown" },
+		order = 2,
 		callback = function(context)
 			menu_item_routine(function()
 				require("features.terminal-and-run").run_file()
@@ -24,6 +26,7 @@ local menu_items = {
 		end,
 	},
 	{
+		order = 1,
 		cmd = "code_action",
 		not_ft = { "markdown" },
 		callback = function(context)
