@@ -17,11 +17,13 @@ end
 local menu_items = {
 	{
 		cmd = "run_file",
-		not_ft = { "markdown" },
+		not_ft = { "markdown", "json", "yaml" },
 		order = 2,
 		callback = function(context)
 			menu_item_routine(function()
-				require("features.terminal-and-run").run_file()
+				if vim.bo.ft == "javascript" then
+					vim.cmd([[!node %]])
+				end
 			end, context)
 		end,
 	},

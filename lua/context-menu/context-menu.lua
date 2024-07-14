@@ -155,7 +155,13 @@ end
 ---@param menu_items ContextMenu.Item[]
 local function reorder_items(menu_items)
 	table.sort(menu_items, function(a, b)
-		return a.order < b.order
+		if a.order and b.order then
+			return a.order < b.order
+		elseif b.order then
+			return false
+		else
+			return true
+		end
 	end)
 end
 
