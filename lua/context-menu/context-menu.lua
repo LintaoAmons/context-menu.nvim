@@ -128,6 +128,9 @@ local function create_local_keymap(items, context)
 	end)
 end
 
+---@param table table
+---@param value any
+---@return boolean
 local function table_contains(table, value)
 	if not table then
 		return false
@@ -153,11 +156,6 @@ local function filter_items(items, context)
 
 	local filter_by_not_ft = {}
 	for _, i in ipairs(filter_by_ft) do
-		if not i.not_ft then
-			table.insert(filter_by_not_ft, i)
-			break
-		end
-
 		if not table_contains(i.not_ft, context.ft) then
 			table.insert(filter_by_not_ft, i)
 		end
