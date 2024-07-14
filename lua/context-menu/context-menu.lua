@@ -115,7 +115,7 @@ local function create_local_keymap(items, context)
 
 	for index, item in ipairs(items) do
 		map(tostring(index), function()
-			 enhance_callback(item.callback(context), context)()
+			enhance_callback(item.callback, context)()
 		end)
 	end
 
