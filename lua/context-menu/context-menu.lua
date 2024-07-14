@@ -62,6 +62,20 @@ local function menu_popup_window(menu_options)
 	}
 end
 
+---play callback with correct buffer
+---@param func function
+---@param context ContextMenu.Context
+---@return function
+local function enhance_callback(func, context)
+	return function()
+		vim.api.nvim_set_current_buf(context.buffer)
+		vim.api.nvim_set_current_win(context.window)
+		vim.api.nvim_win_close(context.menu_window, true)
+		vim.api.nvim_buf_delete(context.menu_buffer, {})
+		func(context)
+	end
+end
+
 ---@param context ContextMenu.Context
 local function trigger_action(context)
 	vim.api.nvim_set_current_buf(context.menu_buffer)
@@ -71,11 +85,12 @@ local function trigger_action(context)
 	local callback
 	for _, item in ipairs(vim.g.context_menu_config.menu_items) do
 		if result.cmd == item.cmd then
-			callback = item.callback
+			callback = enhance_callback(item.callback, context)
 		end
 	end
+
 	if callback then
-		callback(context)
+		callback()
 	else
 		vim.print("haven't implemented yet")
 	end
@@ -100,7 +115,7 @@ local function create_local_keymap(items, context)
 
 	for index, item in ipairs(items) do
 		map(tostring(index), function()
-			item.callback(context)
+			 enhance_callback(item.callback(context), context)()
 		end)
 	end
 

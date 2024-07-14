@@ -16,40 +16,24 @@ end
 ---@field callback function(ContextMenu.Context): nil
 local menu_items = {
 	{
-		cmd = "run_file",
-		not_ft = { "markdown", "json", "yaml" },
-		order = 2,
-		callback = function(context)
-			menu_item_routine(function()
-				if vim.bo.ft == "javascript" then
-					vim.cmd([[!node %]])
-				end
-			end, context)
-		end,
-	},
-	{
 		order = 1,
 		cmd = "code_action",
 		not_ft = { "markdown" },
-		callback = function(context)
-			menu_item_routine(function()
-				vim.cmd([[Lspsaga code_action]])
-			end, context)
+		callback = function(_)
+			vim.cmd([[Lspsaga code_action]])
 		end,
 	},
 	{
 		cmd = "toggle_view",
 		ft = { "markdown" },
-		callback = function(context)
-			menu_item_routine(function()
-				if vim.opt.conceallevel == 2 then
-					vim.opt.conceallevel = 0
-				else
-					vim.opt.conceallevel = 2
-				end
+		callback = function(_)
+			if vim.opt.conceallevel == 2 then
+				vim.opt.conceallevel = 0
+			else
+				vim.opt.conceallevel = 2
+			end
 
-				vim.cmd([[Markview]])
-			end, context)
+			vim.cmd([[Markview]])
 		end,
 	},
 	{
