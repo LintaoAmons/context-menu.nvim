@@ -29,11 +29,13 @@ end
 
 ---@param items ContextMenu.Item[]
 local function get_width(items)
-  local cmds = {}
+  local length = 0
   for _, item in ipairs(items) do
-    table.insert(cmds, item.cmd)
+    if #item.cmd > length then
+      length = #item.cmd
+    end
   end
-  return vim.fn.strdisplaywidth(table.concat(cmds, "\n")) + 3
+  return length + 3
 end
 
 ---@param menu_options ContextMenu.Item[]
@@ -43,6 +45,7 @@ local function menu_popup_window(menu_options)
   vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, add_line_number(menu_options))
   vim.api.nvim_buf_set_option(popup_buf, "modifiable", false)
   local width = get_width(menu_options)
+  vim.print(width)
   local height = #menu_options
 
   local opts = {
