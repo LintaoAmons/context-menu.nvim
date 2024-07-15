@@ -175,12 +175,16 @@ end
 ---@param menu_items ContextMenu.Item[]
 local function reorder_items(menu_items)
   table.sort(menu_items, function(a, b)
-    if (not a.order) and b.order then
+    -- Check if both items have an 'order' field
+    if a.order ~= nil and b.order ~= nil then
+      return a.order < b.order
+    -- If only 'a' has an 'order' field, it should come first
+    elseif a.order ~= nil then
       return true
-    elseif a.order and not b.order then
+    -- If only 'b' has an 'order' field, it should come first
+    elseif b.order ~= nil then
       return false
-    elseif a.order and b.order then
-      return a.order > b.order
+    -- If neither has an 'order' field, they stay in their original order
     else
       return false
     end
