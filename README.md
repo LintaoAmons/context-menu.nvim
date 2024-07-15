@@ -1,31 +1,15 @@
 ## Install & Configuration
-
-> [My config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua)
-
-### Simple version
-
-```lua
-return {
-  "LintaoAmons/context-menu.nvim",
-  opts = {}
-}
-```
-
-### Explain the options
+> You can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua) as a reference
 
 ```lua
 return {
   "LintaoAmons/context-menu.nvim",
   config = function(_, opts)
     require("context-menu").setup({
-      ---@class ContextMenu.Item
-      ---@field cmd string Unique identifier and display name for the menu item.
-      ---@field ft? string[] Optional list of filetypes that determine menu item visibility.
-      ---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
-      ---@field order? number Optional numerical order for menu item sorting.
-      ---@field callback fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
-      menu_items = {}, -- override the default items:: use it when you don't want the plugin provided menu_items
-      add_menu_items = {
+      ---@type ContextMenu.Item[]
+      menu_items = {}, -- default items
+      ---@type ContextMenu.Item[]
+      add_menu_items = { -- add more items :: use it when you split your menu_items over other places
         {
           cmd = "do_something",
           callback = function(context)
@@ -39,7 +23,8 @@ return {
 }
 ```
 
-### Split the config in multiple places
+<details>
+<summary>Split the config in multiple places</summary>
 
 - The main Configuration of context-menu
   - use lazy.vim's `config` to call the `setup` function
@@ -92,7 +77,84 @@ return {
 }
 ```
 
+- `gitsign` specific config for `context-menu.nvim`
+
+```lua
+return {
+  {
+    "LintaoAmons/context-menu.nvim",
+    opts = function(_, opts)
+      local new_items = {
+        {
+          cmd = "Git :: Blame",
+          order = 85,
+          callback = function(_)
+            vim.cmd([[Gitsigns blame]])
+          end,
+        },
+        {
+          cmd = "Git :: Blame Line",
+          order = 84,
+          callback = function(_)
+            vim.cmd([[Gitsigns blame_line]])
+          end,
+        },
+        {
+          cmd = "Git :: Peek",
+          order = 80,
+          callback = function(_)
+            vim.cmd([[Gitsigns preview_hunk]])
+          end,
+        },
+        {
+          cmd = "Git :: Reset Hunk",
+          order = 81,
+          callback = function(_)
+            vim.cmd([[Gitsigns reset_hunk]])
+          end,
+        },
+        {
+          cmd = "Git :: Reset Buffer",
+          order = 82,
+          callback = function(_)
+            vim.cmd([[Gitsigns reset_buffer]])
+          end,
+        },
+        {
+          cmd = "Git :: Diff Current Buffer",
+          order = 83,
+          callback = function(_)
+            require("gitsigns").diffthis()
+          end,
+        },
+      }
+      opts.add_menu_items = opts.add_menu_items or {}
+      for _, i in ipairs(new_items) do
+        table.insert(opts.add_menu_items, i)
+      end
+    end,
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      signs = {
+        add = { text = "▎" },
+        change = { text = "▎" },
+        delete = { text = "" },
+        topdelete = { text = "" },
+        changedelete = { text = "▎" },
+        untracked = { text = "▎" },
+      },
+    },
+  },
+}
+```
+
+</details>
+
 TODO:
 
+- [ ] menu buffer not editable.
+- [ ] sub menu
 - [ ] beautify menu buffer
 - [ ] Example of how to config in multiple file using lazy.vim

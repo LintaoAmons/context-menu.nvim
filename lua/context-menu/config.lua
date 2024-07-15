@@ -6,17 +6,11 @@ local M = {}
 ---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
 ---@field order? number Optional numerical order for menu item sorting.
 ---@field callback fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
-local menu_items = {
-  {
-    cmd = "hi",
-    callback = function(_)
-      vim.print("Hi")
-    end,
-  },
-}
 
 local default_config = {
-  menu_items = menu_items, -- override the default items:: use it when you don't want the plugin provided menu_items
+  ---@type ContextMenu.Item[]
+  menu_items = {}, -- override the default items:: use it when you don't want the plugin provided menu_items
+  ---@type ContextMenu.Item[]
   add_menu_items = {},
 }
 
