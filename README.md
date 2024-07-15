@@ -154,7 +154,6 @@ return {
 
 TODO:
 
-- [ ] menu buffer not editable.
 - [ ] sub menu
 - [ ] beautify menu buffer
 - [ ] Example of how to config in multiple file using lazy.vim

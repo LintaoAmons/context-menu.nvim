@@ -41,6 +41,7 @@ end
 local function menu_popup_window(menu_options)
   local popup_buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, add_line_number(menu_options))
+  vim.api.nvim_buf_set_option(popup_buf, "modifiable", false)
   local width = get_width(menu_options)
   local height = #menu_options
 
@@ -120,6 +121,9 @@ local function create_local_keymap(items, context)
   end
 
   map("<CR>", function()
+    trigger_action(context)
+  end)
+  map("o", function()
     trigger_action(context)
   end)
 
