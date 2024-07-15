@@ -118,9 +118,11 @@ local function create_local_keymap(items, context)
   end)
 
   for index, item in ipairs(items) do
-    map(tostring(index), function()
-      enhance_callback(item.callback, context)()
-    end)
+    if index < 10 then
+      map(tostring(index), function()
+        enhance_callback(item.callback, context)()
+      end)
+    end
   end
 
   map("<CR>", function()
