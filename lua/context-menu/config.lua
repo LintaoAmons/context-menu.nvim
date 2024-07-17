@@ -1,11 +1,22 @@
 local M = {}
 
+---@enum ContextMenu.ActionType
+local ActionType ={
+  callback = 1,
+  sub_cmds = 2
+}
+
+---@class ContextMenu.Action
+---@field type ContextMenu.ActionType
+---@field callback? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
+---@field sub_cmds? ContextMenu.Item[]
+
 ---@class ContextMenu.Item
 ---@field cmd string Unique identifier and display name for the menu item.
+---@field action ContextMenu.Action 
 ---@field ft? string[] Optional list of filetypes that determine menu item visibility.
 ---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
 ---@field order? number Optional numerical order for menu item sorting.
----@field callback fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
 
 local default_config = {
   ---@type ContextMenu.Item[]

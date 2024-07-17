@@ -1,3 +1,9 @@
+> [!WARNING]
+> This plugin is under rapid development, data structure may have big change over time
+> 
+> Currently mostly for my personal usecases
+
+
 ## Install & Configuration
 > You can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua) as a reference
 
