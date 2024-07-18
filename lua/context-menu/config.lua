@@ -1,27 +1,10 @@
 local M = {}
 
----@enum ContextMenu.ActionType
-local ActionType ={
-  callback = 1,
-  sub_cmds = 2
-}
-
----@class ContextMenu.Action
----@field type ContextMenu.ActionType
----@field callback? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
----@field sub_cmds? ContextMenu.Item[]
-
----@class ContextMenu.Item
----@field cmd string Unique identifier and display name for the menu item.
----@field action ContextMenu.Action 
----@field ft? string[] Optional list of filetypes that determine menu item visibility.
----@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
----@field order? number Optional numerical order for menu item sorting.
-
+---@class ContextMenu.Config
+---@field menu_items ContextMenu.Items
+---@field add_menu_items ContextMenu.Items
 local default_config = {
-  ---@type ContextMenu.Item[]
   menu_items = {}, -- override the default items:: use it when you don't want the plugin provided menu_items
-  ---@type ContextMenu.Item[]
   add_menu_items = {},
 }
 
@@ -36,6 +19,7 @@ M.setup = function(opts)
     end
   end
 
+  ---@type ContextMenu.Config
   vim.g.context_menu_config = config
 end
 

@@ -160,6 +160,6 @@ return {
 
 TODO:
 
-- [ ] sub menu
+- [ ] make configuration sourceable in the runtime
 - [ ] beautify menu buffer
 - [ ] Example of how to config in multiple file using lazy.vim
