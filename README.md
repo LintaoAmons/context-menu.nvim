@@ -2,6 +2,12 @@
 >
 > This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
 
+## Philosophy
+
+- Minimise the cognitive overload in the head, but still put every functionality around you hand
+- Less keybindings but remian productivity
+- Configuration can be put in seperated spec files, and behaviour can be config at runtime and take effect immediately
+
 ## Install & Configuration
 
 > You can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua) as a reference
