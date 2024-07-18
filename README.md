@@ -1,30 +1,33 @@
 > [!WARNING]
-> This plugin is under rapid development, data structure may have big change over time
-> 
-> Currently mostly for my personal usecases
-
+>
+> This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
 
 ## Install & Configuration
+
 > You can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua) as a reference
+
 ```lua
 return {
-  "LintaoAmons/context-menu.nvim",
-  config = function(_, opts)
-    require("context-menu").setup({
-      ---@type ContextMenu.Item[]
-      menu_items = {}, -- default items
-      ---@type ContextMenu.Item[]
-      add_menu_items = { -- add more items :: use it when you split your menu_items over other places
-        {
-          cmd = "do_something",
-          callback = function(context)
-            vim.print(context)
-            vim.print("do something")
-          end,
-        },
-      },
-    end,
-  })
+	"LintaoAmons/context-menu.nvim",
+	config = function(_, opts)
+		require("context-menu").setup({
+			---@type ContextMenu.Items
+			menu_items = {}, -- default items
+			---@type ContextMenu.Items
+			add_menu_items = { -- add more items :: use it when you split your menu_items over other places
+				{
+					cmd = "do_something",
+					action = {
+						type = "callback",
+						callback = function(context)
+							vim.print(context) -- you can take a look of what's in side context
+							vim.print("do something")
+						end,
+					},
+				},
+			},
+		})
+	end,
 }
 ```
 
@@ -42,13 +45,13 @@ return {
 
 ![cm-copy](https://github.com/user-attachments/assets/6b59dbbb-594d-41a7-a610-eeb22b332ba1)
 
-
 ## [See more usecases and configuration](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
-```
 
+
+---
 
 TODO:
 
-- [ ] make configuration sourceable in the runtime
+- [ ] make configuration source-able in the runtime
 - [ ] beautify menu buffer
 - [ ] Example of how to config in multiple file using lazy.vim
