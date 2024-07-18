@@ -2,6 +2,13 @@
 >
 > This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
 
+Instead of keymaps, you can put your actions in the context menu
+
+- Menu is a buffer, use hjkl to navigate the items and trigger it or just trigger it by the number 
+- Build your own menu, (items order) and (display or hide) are easily configurable 
+- Split you config in multiple places, encapsulating those item in its own place 
+
+
 ## Philosophy
 
 - Minimise the cognitive overload in the head, but still put every functionality around you hand
