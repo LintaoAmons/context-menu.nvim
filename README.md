@@ -27,9 +27,23 @@ return {
   })
 }
 ```
+
 ## Usecases
 
-## [See more usecases](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
+### Git
+
+![cm-git-blame](https://github.com/user-attachments/assets/185c9ebb-7d94-4864-989b-6a6a0a32867f)
+
+### Json | Jq
+
+![cm-jq](https://github.com/user-attachments/assets/6b4212e1-2122-4ad1-bd66-3e1f72864b1a)
+
+### Copy
+
+![cm-copy](https://github.com/user-attachments/assets/6b59dbbb-594d-41a7-a610-eeb22b332ba1)
+
+
+## [See more usecases and configuration](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
 ```
 
 
