@@ -26,6 +26,7 @@ return {
 					},
 				},
 			},
+            enable_log = true, -- enable error log be printed out. Turn it off if you don't want see those lines
 		})
 	end,
 }

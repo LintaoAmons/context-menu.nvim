@@ -150,7 +150,7 @@ local function create_local_keymap(items, local_buf_win, context)
   end)
 
   map("g?", function()
-    vim.print("<q> quit; <CR> trigger action under cursor")
+    Utils.log("<q> quit; <CR> trigger action under cursor")
   end)
 end
 

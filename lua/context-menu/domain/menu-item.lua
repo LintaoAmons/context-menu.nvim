@@ -1,3 +1,5 @@
+local Utils = require("context-menu.utils")
+
 ---@class ContextMenu.Item
 ---@field cmd string **Unique identifier** and display name for the menu item.
 ---@field action ContextMenu.Action
@@ -40,7 +42,7 @@ end
 ---@param context ContextMenu.Context
 function M.trigger_action(self, local_buf_win, context)
   if not self.action or not self.action.type then
-    return vim.print("missing ActionType in the item config [" .. self.cmd .. "]")
+    return Utils.log("missing ActionType in the item config [" .. self.cmd .. "]")
   end
 
   if self.action.type == M.ActionType.callback then
@@ -53,7 +55,7 @@ function M.trigger_action(self, local_buf_win, context)
       { level = local_buf_win.level }
     )
   else
-    vim.print("haven't implemented yet")
+    Utils.log("haven't implemented yet")
   end
 end
 

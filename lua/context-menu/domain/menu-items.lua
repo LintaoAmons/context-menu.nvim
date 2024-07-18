@@ -1,4 +1,5 @@
 local Item = require("context-menu.domain.menu-item")
+local Utils = require("context-menu.utils")
 local M = {}
 
 ---@alias ContextMenu.Items ContextMenu.Item[]
@@ -27,7 +28,7 @@ local function all_items()
 
     for _, item in ipairs(items) do
       if not item.action then
-        vim.print("action is not found in menu_item [" .. item.cmd .. "]") -- TODO: option to disable this error info print
+        Utils.log("action is not found in menu_item [" .. item.cmd .. "]") -- TODO: option to disable this error info print
         goto continue
       end
 
@@ -49,7 +50,7 @@ function M.find_item_by_cmd(cmd)
     if cmd == item.cmd then
       return item
     else
-      vim.print("Can't find Menu Item by this cmd [" .. cmd .. "]")
+      Utils.log("Can't find Menu Item by this cmd [" .. cmd .. "]")
     end
   end
 end
