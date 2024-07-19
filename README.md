@@ -4,10 +4,9 @@
 
 Instead of keymaps, you can put your actions in the context menu
 
-- Menu is a buffer, use hjkl to navigate the items and trigger it or just trigger it by the number 
-- Build your own menu, (items order) and (display or hide) are easily configurable 
-- Split you config in multiple places, encapsulating those item in its own place 
-
+- Menu is a buffer, use hjkl to navigate the items and trigger it or just trigger it by the number
+- Build your own menu, (items order) and (display or hide) are easily configurable
+- Split you config in multiple places, encapsulating those item in its own place
 
 ## Philosophy
 
@@ -17,7 +16,7 @@ Instead of keymaps, you can put your actions in the context menu
 
 ## Install & Configuration
 
-> You can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua) as a reference
+> For more complex usecases, you can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua) as a reference
 
 ```lua
 return {
@@ -43,6 +42,33 @@ return {
     })
   end,
 }
+```
+
+This is the type definition of the MenuItem, you can config your items according to this definition
+
+```lua
+---@class ContextMenu.Item
+---@field cmd string **Unique identifier** and display name for the menu item.
+---@field action ContextMenu.Action
+---@field ft? string[] Optional list of filetypes that determine menu item visibility.
+---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
+---@field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
+---@field order? number Optional numerical order for menu item sorting.
+
+---@class ContextMenu.Action
+---@field type ContextMenu.ActionType
+---@field callback? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
+---@field sub_cmds? ContextMenu.Item[]
+```
+
+## Keymaps
+
+No default keymaps, you need to set the shortcut by yourself, here's a reference
+
+```lua
+vim.keymap.set({ "v", "n" }, "<M-l>", function()
+  require("context-menu").trigger_context_menu()
+end, {})
 ```
 
 ## Usecases
@@ -140,6 +166,7 @@ return {
 </details>
 
 ### Json | Jq
+
 > [config ref](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/lang/json.lua)
 
 ![cm-jq](https://github.com/user-attachments/assets/6b4212e1-2122-4ad1-bd66-3e1f72864b1a)
@@ -205,6 +232,7 @@ return {
 </details>
 
 ### Copy
+
 > [config ref](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/copy.lua)
 
 ![cm-copy](https://github.com/user-attachments/assets/6b59dbbb-594d-41a7-a610-eeb22b332ba1)
@@ -345,10 +373,10 @@ return {
   },
 }
 ```
+
 </details>
 
 ## [See more usecases and configuration](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
-
 
 ---
 
