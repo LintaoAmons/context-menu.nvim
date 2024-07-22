@@ -1,6 +1,10 @@
 > [!WARNING]
 >
 > This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
+>
+> Switch to Dev branch to enjoy new features:
+>
+> - Merge MenuItems when call setup function, multiple places, even at runtime
 
 Instead of keymaps, you can put your actions in the context menu
 
