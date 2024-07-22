@@ -2,6 +2,14 @@
 >
 > This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
 
+<p align="center">
+  <a href="https://github.com/LintaoAmons/context-menu.nvim">Philosophy</a>
+  ·
+  <a href="https://github.com/LintaoAmons/context-menu.nvim">Install & Configuration</a>
+  ·
+  <a href="https://github.com/songquanpeng/one-api/issues">Usecases</a>
+</p>
+
 Instead of keymaps, you can put your actions in the context menu
 
 - Menu is a buffer, use hjkl to navigate the items and trigger it or just trigger it by the number
@@ -15,30 +23,49 @@ Instead of keymaps, you can put your actions in the context menu
 - Configuration can be put in seperated spec files, and behaviour can be config at runtime and take effect immediately
 
 ## Install & Configuration
-
 > For more complex usecases, you can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/context-menu.lua) as a reference
 
 ```lua
 return {
   "LintaoAmons/context-menu.nvim",
   config = function(_, opts)
-    require("context-menu").setup({
-      ---@type ContextMenu.Items
-      menu_items = {}, -- default items
-      ---@type ContextMenu.Items
-      add_menu_items = { -- add more items :: use it when you split your menu_items over other places
+    -- setup function can be called multiple time at multiple places
+    -- MenuItems will be merged instead of overwrite
+    -- You can also source the setup function at runtime to test your configuration
+    -- run `:lua = vim.g.context_menu_config` to check your current configuration
+    require("context-menu").setup({ 
+      menu_items = {
         {
-          cmd = "do_something",
+          order = 1,
+          cmd = "Code Action",
+          not_ft = { "markdown" },
           action = {
             type = "callback",
-            callback = function(context)
-              vim.print(context) -- you can take a look of what's in side context
-              vim.print("do something")
+            callback = function(_)
+              vim.cmd([[Lspsaga code_action]])
+            end,
+          },
+        },
+        {
+          order = 2,
+          cmd = "Run Test",
+          not_ft = { "markdown" },
+          filter_func = function(context)
+            local a = context.filename
+            if string.find(a, ".test.") or string.find(a, "spec.") then
+              return true
+            else
+              return false
+            end
+          end,
+          action = {
+            type = "callback",
+            callback = function(_)
+              require("neotest").run.run()
             end,
           },
         },
       },
-      enable_log = true, -- enable error log be printed out. Turn it off if you don't want see those lines
     })
   end,
 }
@@ -80,86 +107,160 @@ end, {})
 <details>
 <summary>Config</summary>
 
-```lua
+```lua title="gitsign.lua"
+local prev_hunk = function()
+  require("gitsigns").prev_hunk({ navigation_message = false })
+end
+vim.keymap.set("n", "gk", prev_hunk)
+
+local next_hunk = function()
+  require("gitsigns").next_hunk({ navigation_message = false })
+end
+vim.keymap.set("n", "gj", next_hunk)
+
 return {
-  "LintaoAmons/context-menu.nvim",
-  opts = function(_, opts)
-    local new_items = {
+  {
+    "LintaoAmons/context-menu.nvim",
+    opts = function(_, opts)
+      require("context-menu").setup({
+        menu_items = {
+          {
+            cmd = "Git",
+            order = 85,
+            action = {
+              type = "sub_cmds",
+              sub_cmds = {
+                {
+                  cmd = "Commit Log Diagram",
+                  order = 86,
+                  action = {
+                    type = "callback",
+                    callback = function(_)
+                      vim.cmd([[Flog]])
+                    end,
+                  },
+                },
+                {
+                  cmd = "Git :: Blame",
+                  order = 85,
+                  action = {
+                    type = "callback",
+                    callback = function(_)
+                      vim.cmd([[Gitsigns blame]])
+                    end,
+                  },
+                },
+                {
+                  cmd = "Git :: Peek",
+                  order = 80,
+                  action = {
+                    type = "callback",
+                    callback = function(_)
+                      vim.cmd([[Gitsigns preview_hunk]])
+                    end,
+                  },
+                },
+                {
+                  cmd = "Git :: Reset Hunk",
+                  order = 81,
+                  action = {
+                    type = "callback",
+                    callback = function(_)
+                      vim.cmd([[Gitsigns reset_hunk]])
+                    end,
+                  },
+                },
+                {
+                  cmd = "Git :: Reset Buffer",
+                  order = 82,
+                  action = {
+                    type = "callback",
+                    callback = function(_)
+                      vim.cmd([[Gitsigns reset_buffer]])
+                    end,
+                  },
+                },
+                {
+                  cmd = "Git :: Diff Current Buffer",
+                  order = 83,
+                  action = {
+                    type = "callback",
+                    callback = function(_)
+                      require("gitsigns").diffthis()
+                    end,
+                  },
+                },
+              },
+            },
+          },
+        },
+      })
+    end,
+  },
+  -- git signs highlights text that has changed since the list
+  -- git commit, and also lets you interactively stage & unstage
+  -- hunks in a commit.
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      signs = {
+        add = { text = "▎" },
+        change = { text = "▎" },
+        delete = { text = "" },
+        topdelete = { text = "" },
+        changedelete = { text = "▎" },
+        untracked = { text = "▎" },
+      },
+    },
+  },
+}
+```
+
+```lua title="diffview.lua"
+
+return {
+"LintaoAmons/context-menu.nvim",
+opts = function()
+  require("context-menu").setup({
+    menu_items = {
       {
         cmd = "Git",
-        order = 85,
         action = {
           type = "sub_cmds",
           sub_cmds = {
             {
-              cmd = "Commit Log Diagram",
-              order = 86,
+              cmd = "Git Status",
               action = {
                 type = "callback",
                 callback = function(_)
-                  vim.cmd([[Flog]])
+                  vim.cmd([[DiffviewOpen]])
                 end,
               },
             },
             {
-              cmd = "Git :: Blame",
-              order = 85,
+              cmd = "Branch History",
               action = {
                 type = "callback",
                 callback = function(_)
-                  vim.cmd([[Gitsigns blame]])
+                  vim.cmd([[DiffviewFileHistory]])
                 end,
               },
             },
             {
-              cmd = "Git :: Peek",
-              order = 80,
+              cmd = "Current File Commit History",
               action = {
                 type = "callback",
                 callback = function(_)
-                  vim.cmd([[Gitsigns preview_hunk]])
-                end,
-              },
-            },
-            {
-              cmd = "Git :: Reset Hunk",
-              order = 81,
-              action = {
-                type = "callback",
-                callback = function(_)
-                  vim.cmd([[Gitsigns reset_hunk]])
-                end,
-              },
-            },
-            {
-              cmd = "Git :: Reset Buffer",
-              order = 82,
-              action = {
-                type = "callback",
-                callback = function(_)
-                  vim.cmd([[Gitsigns reset_buffer]])
-                end,
-              },
-            },
-            {
-              cmd = "Git :: Diff Current Buffer",
-              order = 83,
-              action = {
-                type = "callback",
-                callback = function(_)
-                  require("gitsigns").diffthis()
+                  vim.cmd([[DiffviewFileHistory %]])
                 end,
               },
             },
           },
         },
       },
-    }
-    opts.add_menu_items = opts.add_menu_items or {}
-    for _, i in ipairs(new_items) do
-      table.insert(opts.add_menu_items, i)
-    end
-  end,
+    },
+  })
+end,
 }
 ```
 
