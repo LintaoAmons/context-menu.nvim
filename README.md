@@ -3,11 +3,11 @@
 > This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
 
 <p align="center">
-  <a href="https://github.com/LintaoAmons/context-menu.nvim">Philosophy</a>
+  <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#philosophy">Philosophy</a>
   ·
-  <a href="https://github.com/LintaoAmons/context-menu.nvim">Install & Configuration</a>
+  <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#install--configuration">Install & Configuration</a>
   ·
-  <a href="https://github.com/songquanpeng/one-api/issues">Usecases</a>
+  <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#usecases">Usecases</a>
 </p>
 
 Instead of keymaps, you can put your actions in the context menu
