@@ -18,6 +18,9 @@ Instead of keymaps, you can put your actions in the context menu
 - Adjust your config at runtime, simply source the setup function again
 - Local keymaps of the items
 
+![cm-showcase](https://github.com/user-attachments/assets/d12e3c58-1ce1-406c-a5b7-36020362379d)
+
+
 ## Philosophy
 
 - Minimise the cognitive overload in the head, but still put every functionality around you hand
