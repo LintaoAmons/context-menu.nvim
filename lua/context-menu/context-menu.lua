@@ -127,31 +127,30 @@ local function create_local_keymap(items, local_buf_win, context)
     })
   end
 
-  map("q", function()
-    close_menu(context)
-  end)
-  map("<ESC>", function()
-    close_menu(context)
-  end)
-
   for index, item in ipairs(items) do
+    local action = function()
+      MenuItem.trigger_action(item, local_buf_win, context)
+    end
     if index < 10 then
-      map(tostring(index), function()
-        MenuItem.trigger_action(item, local_buf_win, context)
-      end)
+      map(tostring(index), action)
+    end
+
+    if item.keymap then
+      map(item.keymap, action)
     end
   end
 
-  map("<CR>", function()
-    trigger_action(context, local_buf_win)
-  end)
-  map("o", function()
-    trigger_action(context, local_buf_win)
-  end)
+  for _, k in ipairs(vim.g.context_menu_config.default_action_keymaps.close_menu) do
+    map(k, function()
+      close_menu(context)
+    end)
+  end
 
-  map("g?", function()
-    Utils.log("<q> quit; <CR> trigger action under cursor")
-  end)
+  for _, k in ipairs(vim.g.context_menu_config.default_action_keymaps.trigger_action) do
+    map(k, function()
+      trigger_action(context, local_buf_win)
+    end)
+  end
 end
 
 ---@param menu_items ContextMenu.Item[]

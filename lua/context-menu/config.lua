@@ -1,9 +1,5 @@
 local M = {}
 
----@class ContextMenu.Config
----@field menu_items ContextMenu.Items
----@field add_menu_items ContextMenu.Items
-
 ---merge Items
 ---@param t1 ContextMenu.Items
 ---@param t2 ContextMenu.Items
@@ -52,7 +48,6 @@ M.setup = function(opts)
     config.menu_items = merge_cmds(config.menu_items, opts.menu_items)
   end
 
-  ---@type ContextMenu.Config
   vim.g.context_menu_config = config
 end
 

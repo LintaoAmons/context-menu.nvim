@@ -7,6 +7,7 @@ local Utils = require("context-menu.utils")
 ---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
 ---@field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
 ---@field order? number Optional numerical order for menu item sorting.
+---@field keymap? string Optional, local keymap in menu
 
 ---@class ContextMenu.Action
 ---@field type ContextMenu.ActionType
