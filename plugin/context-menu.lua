@@ -5,10 +5,13 @@ local default_config = {
     -- hint: if you have keymap set to trigger menu like:
     -- vim.keymap.set({ "v", "n" }, "<M-l>", function() require("context-menu").trigger_context_menu() end, {})
     -- You can put the same key here to close the menu, which results like a toggle menu key:
-    -- close_menu = { "q", "<ESC>", "<M-l>" }, 
+    -- close_menu = { "q", "<ESC>", "<M-l>" },
 
     close_menu = { "q", "<ESC>" },
     trigger_action = { "<CR>", "o" },
+  },
+  ui = {
+    selected_item = { bg = "#244C55", fg = "white" },
   },
 }
 

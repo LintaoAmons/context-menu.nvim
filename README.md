@@ -39,10 +39,15 @@ local default_config = {
     -- vim.keymap.set({ "v", "n" }, "<M-l>", function() require("context-menu").trigger_context_menu() end, {})
     -- You can put the same key here to close the menu, which results like a toggle menu key:
     -- close_menu = { "q", "<ESC>", "<M-l>" },
+
     close_menu = { "q", "<ESC>" },
-    trigger_action = { "<CR>", "o" }, -- Trigger undercursor item's action
+    trigger_action = { "<CR>", "o" },
+  },
+  ui = {
+    selected_item = { bg = "#244C55", fg = "white" },
   },
 }
+
 ```
 
 MenuItems config demo
@@ -128,13 +133,19 @@ end, {})
 ```
 
 ## Usecases
+> [See more usecases](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
+>
+> Can also share your usecase in discussion
+
 
 ### Git
 
 ![cm-git-blame](https://github.com/user-attachments/assets/185c9ebb-7d94-4864-989b-6a6a0a32867f)
 
 <details>
-<summary>Git Config: Config in two files</summary>
+<summary>Git Config: An Example to config ContextMenu in two plugin spec files</summary>
+
+1. gitsign.lua
 
 ```lua title="gitsign.lua"
 local prev_hunk = function()
@@ -245,6 +256,8 @@ return {
 }
 ```
 
+2. diffview.lua
+
 ```lua title="diffview.lua"
 
 return {
@@ -346,7 +359,20 @@ return {
 
 ![cm-copy](https://github.com/user-attachments/assets/6b59dbbb-594d-41a7-a610-eeb22b332ba1)
 
-## [See more usecases and configuration](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
+
+## CONTRIBUTING
+
+Don't hesitate to ask me anything about the codebase if you want to contribute.
+
+By [telegram](https://t.me/+ssgpiHyY9580ZWFl) or [微信: CateFat](https://lintao-index.pages.dev/assets/images/wechat-437d6c12efa9f89bab63c7fe07ce1927.png)
+
+## Some Other Neovim Stuff
+
+- [my neovim config](https://github.com/LintaoAmons/CoolStuffes/tree/main/nvim/.config/nvim)
+- [scratch.nvim](https://github.com/LintaoAmons/scratch.nvim)
+- [cd-project.nvim](https://github.com/LintaoAmons/cd-project.nvim)
+- [bookmarks.nvim](https://github.com/LintaoAmons/bookmarks.nvim)
+- [context-menu.nvim](https://github.com/LintaoAmons/context-menu.nvim)
 
 ---
 
@@ -355,4 +381,9 @@ TODO:
 - [x] make configuration source-able in the runtime
 - [x] configurable keymaps
 - [ ] fix the reorder function
+- [ ] fix_order field in MenuItem
 - [ ] beautify menu buffer
+  - [x] highlight item under cursor
+  - [ ] sub menu position
+  - [ ] render shortcuts at the end of the line
+

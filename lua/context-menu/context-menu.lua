@@ -184,6 +184,8 @@ local function menu_popup_window(menu_items, context, opts)
     win = win,
     level = opts.level,
   }, context)
+
+  require("context-menu.hl").create_hight_light(popup_buf)
 end
 
 M.menu_popup_window = menu_popup_window
