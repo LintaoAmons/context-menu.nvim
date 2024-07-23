@@ -1,10 +1,6 @@
 > [!WARNING]
 >
 > This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
->
-> Switch to Dev branch to enjoy new features:
->
-> - Merge MenuItems when call setup function, multiple places, even at runtime
 
 <p align="center">
   <a href="https://github.com/LintaoAmons/context-menu.nvim">Philosophy</a>
