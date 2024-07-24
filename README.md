@@ -384,6 +384,7 @@ TODO:
 - [x] make configuration source-able in the runtime
 - [x] configurable keymaps
 - [ ] fix the reorder function
+- [ ] context-menu scenario: switch to pre-defined menu for specific scenario [Debug, Test, etc]
 - [ ] fix_order field in MenuItem
 - [ ] beautify menu buffer
   - [x] highlight item under cursor
