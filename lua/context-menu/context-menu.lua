@@ -84,8 +84,7 @@ local function trigger_action(context, local_buf_win)
 end
 
 ---@param context ContextMenu.Context
----@param opts? {}
-function prepare_items(context, opts)
+function prepare_items(context)
   local filtered_items = filter_items(vim.g.context_menu_config.menu_items, context)
   reorder_items(filtered_items)
   return filtered_items
@@ -93,7 +92,7 @@ end
 
 ---close all menu buffer and window
 ---@param context ContextMenu.Context
-function close_menu(context)
+local function close_menu(context)
   for _, w in ipairs(context.menu_window_stack) do
     pcall(vim.api.nvim_win_close, w, true)
   end
@@ -182,7 +181,7 @@ local function menu_popup_window(menu_items, context, opts)
   end
 
   local win = vim.api.nvim_open_win(popup_buf, true, win_opts)
-  update_context(context, { menu = { buf = popup_buf, win = win } })
+  Context.update_context(context, { menu = { buf = popup_buf, win = win } })
 
   create_local_keymap(menu_items, {
     buf = popup_buf,
