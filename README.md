@@ -386,6 +386,7 @@ TODO:
 - [ ] fix the reorder function
 - [ ] context-menu scenario: switch to pre-defined menu for specific scenario [Debug, Test, etc]
 - [ ] fix_order field in MenuItem
+- [ ] enhance j/k: k jump from the first item to the last time, j jump from the last item to the first item
 - [ ] beautify menu buffer
   - [x] highlight item under cursor
   - [ ] sub menu position

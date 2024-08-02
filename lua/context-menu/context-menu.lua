@@ -1,19 +1,9 @@
+local Context = require("context-menu.domain.context")
 local MenuItem = require("context-menu.domain.menu-item")
 local MenuItems = require("context-menu.domain.menu-items")
 local Utils = require("context-menu.utils")
 
 local M = {}
-
----@class ContextMenu.Context
----@field buffer number
----@field window number
----@field line string content of current line when trigger the menu
----@field ft string filetype
----@field filename string
----@field menu_buffer_stack number[]
----@field menu_window_stack number[]
----@field menu_buffer number?
----@field menu_window number?
 
 ---@param table table
 ---@param value any
@@ -114,6 +104,7 @@ end
 
 M.close_menu = close_menu
 
+-- TODO: remove LevelInfo object, put it into context
 ---@param items ContextMenu.Item[]
 ---@param local_buf_win ContextMenu.LevelInfo
 ---@param context ContextMenu.Context
@@ -164,20 +155,34 @@ local function menu_popup_window(menu_items, context, opts)
   local width = Utils.get_width(lines)
   local height = #menu_items
 
-  local win_opts = {
-    relative = "cursor",
-    row = 0,
-    col = 0,
-    width = width + 1,
-    height = height,
-    style = "minimal",
-    border = "single",
-    title = "ContextMenu.",
-  }
+  local win_opts = {}
+  if not context.menu_window then
+    win_opts = {
+      relative = "cursor",
+      row = 0, -- Subtract one from row if you want to appear on the same line, or keep as is to go to the next line.
+      col = 0, -- Position the window slightly to the right
+      width = width + 1,
+      height = height,
+      style = "minimal",
+      border = "single",
+      title = "ContextMenu.",
+    }
+  else
+    win_opts = {
+      relative = "win",
+      win = context.menu_window,
+      row = 0, -- Subtract one from row if you want to appear on the same line, or keep as is to go to the next line.
+      col = 15, -- Position the window slightly to the right
+      width = width + 1,
+      height = height,
+      style = "minimal",
+      border = "single",
+      title = "ContextMenu.",
+    }
+  end
 
   local win = vim.api.nvim_open_win(popup_buf, true, win_opts)
-  table.insert(context.menu_window_stack, win)
-  table.insert(context.menu_buffer_stack, popup_buf)
+  update_context(context, { menu = { buf = popup_buf, win = win } })
 
   create_local_keymap(menu_items, {
     buf = popup_buf,
@@ -192,15 +197,7 @@ M.menu_popup_window = menu_popup_window
 
 function M.trigger_context_menu()
   ---@type ContextMenu.Context
-  local context = {
-    line = vim.api.nvim_get_current_line(),
-    window = vim.api.nvim_get_current_win(),
-    buffer = vim.api.nvim_get_current_buf(),
-    filename = vim.fn.expand("%:p:t"),
-    ft = vim.bo.filetype,
-    menu_buffer_stack = {},
-    menu_window_stack = {},
-  }
+  local context = Context.init()
 
   local items = prepare_items(context)
 
