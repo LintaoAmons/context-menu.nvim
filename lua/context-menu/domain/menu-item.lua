@@ -1,19 +1,5 @@
 local Utils = require("context-menu.utils")
 
----@class ContextMenu.Item
----@field cmd string **Unique identifier** and display name for the menu item.
----@field action ContextMenu.Action
----@field ft? string[] Optional list of filetypes that determine menu item visibility.
----@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
----@field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
----@field order? number Optional numerical order for menu item sorting.
----@field keymap? string Optional, local keymap in menu
-
----@class ContextMenu.Action
----@field type ContextMenu.ActionType
----@field callback? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
----@field sub_cmds? ContextMenu.Item[]
-
 local M = {}
 
 ---@enum ContextMenu.ActionType
@@ -21,6 +7,26 @@ M.ActionType = {
   callback = "callback",
   sub_cmds = "sub_cmds",
 }
+
+---@class ContextMenu.Item
+---@field cmd string **Unique identifier** and display name for the menu item.
+---@field action ContextMenu.Action
+---
+--- filter
+---@field ft? string[] Optional list of filetypes that determine menu item visibility.
+---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
+---@field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
+---
+--- order
+---@field fix? number Optional, fix the order of the menu item.
+---@field order? number Optional, order of the menu item.
+---
+---@field keymap? string Optional, local keymap in menu
+
+---@class ContextMenu.Action
+---@field type ContextMenu.ActionType
+---@field callback? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
+---@field sub_cmds? ContextMenu.Item[]
 
 ---play callback with correct buffer
 ---@param func function
@@ -32,7 +38,7 @@ local function enhance_callback(func, local_buf_win, context)
     vim.api.nvim_set_current_buf(context.buffer)
     vim.api.nvim_set_current_win(context.window)
     --TODO: menu_item should not depend on context-menu
-    require("context-menu.context-menu").close_menu(context)
+    require("context-menu.api").close_menu(context)
     func(context)
   end
 end
@@ -50,7 +56,7 @@ function M.trigger_action(self, local_buf_win, context)
     enhance_callback(self.action.callback, local_buf_win, context)()
   elseif self.action.type == M.ActionType.sub_cmds then
     --TODO: how to structure this call?
-    require("context-menu.context-menu").menu_popup_window(
+    require("context-menu.api").menu_popup_window(
       self.action.sub_cmds,
       context,
       { level = local_buf_win.level }

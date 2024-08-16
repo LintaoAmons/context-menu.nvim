@@ -52,18 +52,42 @@ end
 
 ---order menu_items by the their order field value
 ---@param menu_items ContextMenu.Item[]
-local function reorder_items(menu_items)
+---@param context ContextMenu.Context
+local function reorder_items(menu_items, context)
   table.sort(menu_items, function(a, b)
-    if (not a.order) and b.order then
-      return true
-    elseif a.order and not b.order then
-      return false
-    elseif a.order and b.order then
-      return a.order > b.order
-    else
-      return false
+    if not a.order and not b.order then
+      return false -- Both are equal; stay in their current order.
+    elseif not a.order then
+      return false -- a should come after b since it does not have an order.
+    elseif not b.order then
+      return true -- b should come after a since it does not have an order.
     end
+
+    return a.order < b.order -- Compare numerically if both have valid orders.
   end)
+
+  local items = {}
+  local fix_items = {}
+  for _, item in ipairs(menu_items) do
+    if item.fix then
+      if not fix_items[item.fix] then
+        fix_items[item.fix] = { item }
+      else
+        table.insert(fix_items[item.fix], item)
+      end
+    else
+      table.insert(items, item)
+    end
+  end
+
+  for i, group in pairs(fix_items) do
+    for j = #group, 1, -1 do
+      local e = group[j]
+      table.insert(items, i, e)
+    end
+  end
+
+  return items
 end
 
 ---@class ContextMenu.LevelInfo
@@ -84,10 +108,10 @@ local function trigger_action(context, local_buf_win)
 end
 
 ---@param context ContextMenu.Context
-function prepare_items(context)
+local function prepare_items(context)
   local filtered_items = filter_items(vim.g.context_menu_config.menu_items, context)
-  reorder_items(filtered_items)
-  return filtered_items
+  local ordered_items = reorder_items(filtered_items, context)
+  return ordered_items
 end
 
 ---close all menu buffer and window

@@ -56,20 +56,32 @@ local default_config = {
 MenuItems config demo
 
 ```lua
--- TYPE REF
---class ContextMenu.Item
---field cmd string **Unique identifier** and display name for the menu item.
---field action ContextMenu.Action
---field ft? string[] Optional list of filetypes that determine menu item visibility.
---field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
---field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
---field order? number Optional numerical order for menu item sorting.
---field keymap? string Optional, local keymap in menu
+---@enum ContextMenu.ActionType
+M.ActionType = {
+  callback = "callback",
+  sub_cmds = "sub_cmds",
+}
 
---class ContextMenu.Action
---field type ContextMenu.ActionType
---field callback? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
---field sub_cmds? ContextMenu.Item[]
+---@class ContextMenu.Item
+---@field cmd string **Unique identifier** and display name for the menu item.
+---@field action ContextMenu.Action
+---
+--- filter
+---@field ft? string[] Optional list of filetypes that determine menu item visibility.
+---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
+---@field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
+---
+--- order
+---@field fix? number Optional, fix the order of the menu item.
+---@field order? number Optional, order of the menu item.
+---
+---@field keymap? string Optional, local keymap in menu
+
+---@class ContextMenu.Action
+---@field type ContextMenu.ActionType
+---@field callback? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
+---@field sub_cmds? ContextMenu.Item[]
+
 
 return {
   "LintaoAmons/context-menu.nvim",
