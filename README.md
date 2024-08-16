@@ -20,7 +20,6 @@ Instead of keymaps, you can put your actions in the context menu
 
 ![cm-showcase](https://github.com/user-attachments/assets/d12e3c58-1ce1-406c-a5b7-36020362379d)
 
-
 ## Philosophy
 
 - Minimise the cognitive overload in the head, but still put every functionality around you hand
@@ -28,21 +27,34 @@ Instead of keymaps, you can put your actions in the context menu
 - Configuration can be put in seperated spec files, and behaviour can be config at runtime and take effect immediately
 
 ## Install & Configuration
-
 > For more complex usecases, you can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-core/context-menu.lua) as a reference
-
-Default config and fields overview
 
 ```lua
 local default_config = {
-  menu_items = {}, -- add menu_items, if you call setup function at multiple place, this field will merge together instead of overwrite
+  -- add menu_items, if you call setup function at multiple place, this field will merge together instead of overwrite
+  menu_items = {
+    {
+      cmd = "Run File",
+      order = 1,
+      not_ft = { "markdown" },
+      action = {
+        type = "callback",
+        callback = function(context)
+          if context.ft == "lua" then
+            return vim.cmd([[source %]])
+          elseif context.ft == "javascript" then
+            return vim.print("run javascript:: haven't impl yet")
+          end
+        end,
+      },
+    }
+  }, 
   enable_log = true, -- Optional, enable error log be printed out. Turn it off if you don't want see those lines
   default_action_keymaps = {
     -- hint: if you have keymap set to trigger menu like:
     -- vim.keymap.set({ "v", "n" }, "<M-l>", function() require("context-menu").trigger_context_menu() end, {})
     -- You can put the same key here to close the menu, which results like a toggle menu key:
     -- close_menu = { "q", "<ESC>", "<M-l>" },
-
     close_menu = { "q", "<ESC>" },
     trigger_action = { "<CR>", "o" },
   },
@@ -53,7 +65,8 @@ local default_config = {
 
 ```
 
-MenuItems config demo
+<details>
+<summary>Click here to check the items config demo</summary>
 
 ```lua
 ---@enum ContextMenu.ActionType
@@ -137,6 +150,8 @@ return {
 }
 ```
 
+</details>
+
 ## Keymaps
 
 No default keymaps, you need to set the shortcut by yourself, here's a reference
@@ -148,10 +163,10 @@ end, {})
 ```
 
 ## Usecases
+
 > [See more usecases](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
 >
 > Can also share your usecase in discussion
-
 
 ### Git
 
@@ -374,7 +389,6 @@ return {
 
 ![cm-copy](https://github.com/user-attachments/assets/6b59dbbb-594d-41a7-a610-eeb22b332ba1)
 
-
 ## CONTRIBUTING
 
 Don't hesitate to ask me anything about the codebase if you want to contribute.
@@ -395,12 +409,11 @@ TODO:
 
 - [x] make configuration source-able in the runtime
 - [x] configurable keymaps
-- [ ] fix the reorder function
-- [ ] context-menu scenario: switch to pre-defined menu for specific scenario [Debug, Test, etc]
-- [ ] fix_order field in MenuItem
+- [x] fix the reorder function
+- [x] fix_order field in MenuItem
 - [ ] enhance j/k: k jump from the first item to the last time, j jump from the last item to the first item
+- [ ] navi back/forward
 - [ ] beautify menu buffer
   - [x] highlight item under cursor
   - [ ] sub menu position
   - [ ] render shortcuts at the end of the line
-
