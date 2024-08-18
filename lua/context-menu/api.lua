@@ -99,13 +99,9 @@ local function trigger_action(context, local_buf_win)
   local current_buf = context.menu_buffer_stack[local_buf_win.level]
   vim.api.nvim_set_current_buf(current_buf)
 
-  vim.print(context)
-  vim.print(current_buf)
-  vim.print(vim.api.nvim_get_current_line())
   local line = vim.api.nvim_get_current_line()
 
   local selected_cmd = MenuItem.parse(line)
-  vim.print(selected_cmd)
 
   local item = MenuItems.find_item_by_cmd(selected_cmd.cmd)
   MenuItem.trigger_action(item, local_buf_win, context)
@@ -149,11 +145,13 @@ local function create_local_keymap(items, local_level, context)
     local action = function()
       MenuItem.trigger_action(item, local_level, context)
     end
+    vim.print(item)
     if index < 10 then
       map(tostring(index), action)
     end
 
     if item.keymap then
+      vim.print(item.keymap)
       map(item.keymap, action)
     end
   end

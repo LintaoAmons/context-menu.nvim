@@ -75,12 +75,9 @@ function M.format(self, opts)
   local max_length = opts.max_length or M.MAX_LENGTH
   local content_length = max_length - 3 - 2
   local content = self.cmd
-  vim.print(#content)
   if #content > content_length then
-    vim.print(content_length)
     content = string.sub(content, 1, content_length)
   end
-  vim.print(content)
   return string.format(
     "%-3s %-" .. content_length .. "s %2s",
     opts.line_number,

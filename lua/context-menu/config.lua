@@ -17,10 +17,27 @@ local function merge_cmds(t1, t2)
     local item2 = t2_lookup[item1.cmd]
 
     if item2 then
+      if not item1.action then
+        error("Action is not found in menu_item [" .. item1.cmd .. "]")
+      end
+      if not item2.action then
+        error("Action is not found in menu_item [" .. item2.cmd .. "]")
+      end
+
       local merged_item = item1
 
       if item1.action.sub_cmds and item2.action.sub_cmds then
         merged_item.action.sub_cmds = merge_cmds(item1.action.sub_cmds, item2.action.sub_cmds)
+      elseif item1.action.sub_cmds or item2.action.sub_cmds then
+        merged_item.action.sub_cmds = item1.action.sub_cmds or item2.action.sub_cmds
+      else
+        merged_item.action = item2.action
+      end
+
+      for k, v in pairs(item2) do
+        if k ~= "action" then
+          merged_item[k] = v
+        end
       end
 
       table.insert(result, merged_item)
