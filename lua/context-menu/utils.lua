@@ -9,7 +9,7 @@ function M.get_width(lines)
       length = #line
     end
   end
-  return length + 3
+  return length + 1
 end
 
 function M.log(msg)

@@ -92,16 +92,20 @@ end
 
 ---@class ContextMenu.LevelInfo
 ---@field level number
----@field buf number
----@field win number
 
 ---@param context ContextMenu.Context
 ---@param local_buf_win ContextMenu.LevelInfo
 local function trigger_action(context, local_buf_win)
-  vim.api.nvim_set_current_buf(local_buf_win.buf)
+  local current_buf = context.menu_buffer_stack[local_buf_win.level]
+  vim.api.nvim_set_current_buf(current_buf)
+
+  vim.print(context)
+  vim.print(current_buf)
+  vim.print(vim.api.nvim_get_current_line())
   local line = vim.api.nvim_get_current_line()
 
   local selected_cmd = MenuItem.parse(line)
+  vim.print(selected_cmd)
 
   local item = MenuItems.find_item_by_cmd(selected_cmd.cmd)
   MenuItem.trigger_action(item, local_buf_win, context)
@@ -127,23 +131,23 @@ end
 
 M.close_menu = close_menu
 
--- TODO: remove LevelInfo object, put it into context
 ---@param items ContextMenu.Item[]
----@param local_buf_win ContextMenu.LevelInfo
+---@param local_level ContextMenu.LevelInfo
 ---@param context ContextMenu.Context
-local function create_local_keymap(items, local_buf_win, context)
+local function create_local_keymap(items, local_level, context)
   local function map(lhs, rhs)
+    local current_buf = context.menu_buffer_stack[local_level.level]
     vim.keymap.set({ "v", "n" }, lhs, rhs, {
       noremap = true,
       silent = true,
       nowait = true,
-      buffer = local_buf_win.buf,
+      buffer = current_buf,
     })
   end
 
   for index, item in ipairs(items) do
     local action = function()
-      MenuItem.trigger_action(item, local_buf_win, context)
+      MenuItem.trigger_action(item, local_level, context)
     end
     if index < 10 then
       map(tostring(index), action)
@@ -162,15 +166,15 @@ local function create_local_keymap(items, local_buf_win, context)
 
   for _, k in ipairs(vim.g.context_menu_config.default_action_keymaps.trigger_action) do
     map(k, function()
-      trigger_action(context, local_buf_win)
+      trigger_action(context, local_level)
     end)
   end
 end
 
 ---@param menu_items ContextMenu.Item[]
 ---@param context ContextMenu.Context
----@param opts {level: number}
-local function menu_popup_window(menu_items, context, opts)
+---@param local_level ContextMenu.LevelInfo
+function M.menu_popup_window(menu_items, context, local_level)
   local popup_buf = vim.api.nvim_create_buf(false, true)
   local lines = MenuItems.format(menu_items)
   vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, lines)
@@ -184,7 +188,7 @@ local function menu_popup_window(menu_items, context, opts)
       relative = "cursor",
       row = 0, -- Subtract one from row if you want to appear on the same line, or keep as is to go to the next line.
       col = 0, -- Position the window slightly to the right
-      width = width + 1,
+      width = width,
       height = height,
       style = "minimal",
       border = "single",
@@ -210,13 +214,11 @@ local function menu_popup_window(menu_items, context, opts)
   create_local_keymap(menu_items, {
     buf = popup_buf,
     win = win,
-    level = opts.level,
+    level = local_level.level,
   }, context)
 
   require("context-menu.hl").create_hight_light(popup_buf)
 end
-
-M.menu_popup_window = menu_popup_window
 
 function M.trigger_context_menu()
   ---@type ContextMenu.Context
@@ -224,7 +226,7 @@ function M.trigger_context_menu()
 
   local items = prepare_items(context)
 
-  menu_popup_window(items, context, { level = 1 })
+  M.menu_popup_window(items, context, { level = 1 })
 end
 
 return M

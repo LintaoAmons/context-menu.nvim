@@ -409,6 +409,7 @@ TODO:
 
 - [x] make configuration source-able in the runtime
 - [x] configurable keymaps
+- [ ] Show shortcut in the menu
 - [x] fix the reorder function
 - [x] fix_order field in MenuItem
 - [ ] enhance j/k: k jump from the first item to the last time, j jump from the last item to the first item

@@ -6,8 +6,6 @@
 ---@field filename string filename of the file where triggered the menu
 ---@field menu_buffer_stack number[]
 ---@field menu_window_stack number[]
----@field menu_buffer number? current level menu's buffer
----@field menu_window number? current level menu's window
 
 local M = {}
 
@@ -26,11 +24,8 @@ end
 ---@param prev ContextMenu.Context
 ---@param new_values {menu: {buf: number, win: number}}
 function M.update_context(prev, new_values)
-  prev.menu_window = new_values.menu.win
-  prev.menu_buffer = new_values.menu.buf
   table.insert(prev.menu_window_stack, new_values.menu.win)
   table.insert(prev.menu_buffer_stack, new_values.menu.buf)
 end
-
 
 return M

@@ -59,7 +59,7 @@ function M.trigger_action(self, local_buf_win, context)
     require("context-menu.api").menu_popup_window(
       self.action.sub_cmds,
       context,
-      { level = local_buf_win.level }
+      { level = local_buf_win.level + 1 }
     )
   else
     Utils.log("haven't implemented yet")
@@ -68,19 +68,41 @@ end
 
 ---prepare item to display in the menu_window
 ---@param self ContextMenu.Item
----@param opts? {line_number: number}
+---@param opts {line_number: number, max_length?: number}
 function M.format(self, opts)
-  opts = opts or {}
-
-  return opts.line_number .. " " .. self.cmd
+  local max_length = opts.max_length or 20
+  local content_length = max_length - 3 - 2
+  local content = self.cmd
+  vim.print(#content)
+  if #content > content_length then
+    vim.print(content_length)
+    content = string.sub(content, 1, content_length)
+  end
+  vim.print(content)
+  return string.format(
+    "%-3s %-" .. content_length .. "s %2s",
+    opts.line_number,
+    content,
+    self.keymap or ""
+  )
 end
 
----@param cmd string the display stringn in the menu_window
----@return {line_number: number, cmd: string}
+---@param cmd string the display string in the menu_window
+---@return {line_number?: number , cmd?: string }
 function M.parse(cmd)
+  local line_number_str = cmd:match("^(%d+)")
+
+  if not line_number_str then
+    error("Line number not found in command: " .. cmd)
+  end
+
+  local line_number = tonumber(line_number_str)
+
+  local command_text = cmd:gsub("^%d+%s+(%w+)%s*(.-)$", "%1")
+
   return {
-    line_number = tonumber(cmd:match("^(%d+)")),
-    cmd = cmd:gsub("^%d+%s+", ""),
+    line_number = line_number,
+    cmd = command_text,
   }
 end
 
