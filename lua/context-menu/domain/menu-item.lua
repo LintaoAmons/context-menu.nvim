@@ -2,6 +2,8 @@ local Utils = require("context-menu.utils")
 
 local M = {}
 
+M.MAX_LENGTH = 20
+
 ---@enum ContextMenu.ActionType
 M.ActionType = {
   callback = "callback",
@@ -70,7 +72,7 @@ end
 ---@param self ContextMenu.Item
 ---@param opts {line_number: number, max_length?: number}
 function M.format(self, opts)
-  local max_length = opts.max_length or 20
+  local max_length = opts.max_length or M.MAX_LENGTH
   local content_length = max_length - 3 - 2
   local content = self.cmd
   vim.print(#content)

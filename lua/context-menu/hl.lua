@@ -1,4 +1,5 @@
 local M = {}
+local Item = require("context-menu.domain.menu-item")
 local HILIGHT_GROUP = "CurrentLineContextMenu"
 
 ---@param bufnr number
@@ -25,8 +26,42 @@ local function highlight_current_line(bufnr)
     end_row = row,
     end_col = line_length,
     hl_group = HILIGHT_GROUP,
-    priority = 100,
+    priority = 101,
   })
+end
+
+local function hilight_column(bufnr)
+  local ns_id = vim.api.nvim_create_namespace("hilight_column")
+
+  vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
+
+  vim.api.nvim_set_hl(0, "ContextMenuColumn1", { fg = "#656565" }) -- Green
+  vim.api.nvim_set_hl(0, "ContextMenuColumn2", { fg = "white" }) -- Green
+  vim.api.nvim_set_hl(0, "ContextMenuColumn3", { fg = "#656565" }) -- Green
+  local line_count = vim.api.nvim_buf_line_count(bufnr)
+
+  -- TODO: this is a hack, need to find a better way to do this
+  local end_col = Item.MAX_LENGTH
+  for i = 1, line_count do
+    vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 0, {
+      end_row = i - 1,
+      end_col = 3,
+      hl_group = "ContextMenuColumn1",
+      priority = 100,
+    })
+    vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 4, {
+      end_row = i - 1,
+      end_col = end_col,
+      hl_group = "ContextMenuColumn2",
+      priority = 100,
+    })
+    vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 20, {
+      end_row = i - 1,
+      end_col = 22,
+      hl_group = "ContextMenuColumn3",
+      priority = 100,
+    })
+  end
 end
 
 ---create highlight for current buffer
@@ -36,6 +71,7 @@ function M.create_hight_light(bufnr)
   vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
     callback = function()
       highlight_current_line(bufnr)
+      hilight_column(bufnr)
     end,
     buffer = bufnr, -- Ensure the autocommand is tied to the current buffer
   })
