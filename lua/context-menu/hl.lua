@@ -55,9 +55,9 @@ local function hilight_column(bufnr)
       hl_group = "ContextMenuColumn2",
       priority = 100,
     })
-    vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 20, {
+    vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, end_col -1, {
       end_row = i - 1,
-      end_col = 22,
+      end_col = end_col+2,
       hl_group = "ContextMenuColumn3",
       priority = 100,
     })

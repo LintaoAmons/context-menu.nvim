@@ -2,7 +2,7 @@ local Utils = require("context-menu.utils")
 
 local M = {}
 
-M.MAX_LENGTH = 20
+M.MAX_LENGTH = 40
 
 ---@enum ContextMenu.ActionType
 M.ActionType = {
@@ -68,40 +68,45 @@ function M.trigger_action(self, local_buf_win, context)
   end
 end
 
+local line_number_length = 3
+local keymap_length = 2
 ---prepare item to display in the menu_window
 ---@param self ContextMenu.Item
----@param opts {line_number: number, max_length?: number}
+---@param opts {line_number: number}
 function M.format(self, opts)
-  local max_length = opts.max_length or M.MAX_LENGTH
+  local max_length = M.MAX_LENGTH
   local content_length = max_length - 3 - 2
   local content = self.cmd
   if #content > content_length then
     content = string.sub(content, 1, content_length)
   end
   return string.format(
-    "%-3s %-" .. content_length .. "s %2s",
+    "%-" .. line_number_length .. "s %-" .. content_length .. "s %" .. keymap_length .. "s",
     opts.line_number,
     content,
     self.keymap or ""
   )
 end
 
----@param cmd string the display string in the menu_window
----@return {line_number?: number , cmd?: string }
-function M.parse(cmd)
-  local line_number_str = cmd:match("^(%d+)")
+---@return { line_number: number, cmd: string, keymap: string }
+function M.parse(formatted_str)
+  -- Define lengths based on the original formatting
+  local content_length = M.MAX_LENGTH - line_number_length - keymap_length - 2 -- Account for spaces
 
-  if not line_number_str then
-    error("Line number not found in command: " .. cmd)
-  end
+  -- Extract each component based on expected positions
+  local line_number_str = string.sub(formatted_str, 1, line_number_length + 1):gsub("^%s+", "") -- Clean up leading spaces
+  local content_str = string
+    .sub(formatted_str, line_number_length + 2, line_number_length + content_length)
+    :gsub("%s+$", "") -- Clean up trailing spaces
+  local keymap_str = string.sub(formatted_str, -keymap_length):gsub("^%s+", "") -- Clean up leading spaces
 
+  -- Convert line_number from string to number
   local line_number = tonumber(line_number_str)
-
-  local command_text = cmd:gsub("^%d+%s+(%w+)%s*(.-)$", "%1")
 
   return {
     line_number = line_number,
-    cmd = command_text,
+    cmd = content_str,
+    keymap = keymap_str,
   }
 end
 
