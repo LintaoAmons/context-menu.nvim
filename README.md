@@ -27,6 +27,7 @@ Instead of keymaps, you can put your actions in the context menu
 - Configuration can be put in seperated spec files, and behaviour can be config at runtime and take effect immediately
 
 ## Install & Configuration
+
 > For more complex usecases, you can use [my config](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-core/context-menu.lua) as a reference
 
 ```lua
@@ -48,7 +49,7 @@ local default_config = {
         end,
       },
     }
-  }, 
+  },
   enable_log = true, -- Optional, enable error log be printed out. Turn it off if you don't want see those lines
   default_action_keymaps = {
     -- hint: if you have keymap set to trigger menu like:
@@ -164,230 +165,12 @@ end, {})
 
 ## Usecases
 
-> [See more usecases](https://lintao-index.pages.dev/docs/Vim/plugins/context-menu/)
+> Copy paste the module into your config.
 >
-> Can also share your usecase in discussion
+> Please share your usecases by provided a PR.
 
-### Git
-
-![cm-git-blame](https://github.com/user-attachments/assets/185c9ebb-7d94-4864-989b-6a6a0a32867f)
-
-<details>
-<summary>Git Config: An Example to config ContextMenu in two plugin spec files</summary>
-
-1. gitsign.lua
-
-```lua title="gitsign.lua"
-local prev_hunk = function()
-  require("gitsigns").prev_hunk({ navigation_message = false })
-end
-vim.keymap.set("n", "gk", prev_hunk)
-
-local next_hunk = function()
-  require("gitsigns").next_hunk({ navigation_message = false })
-end
-vim.keymap.set("n", "gj", next_hunk)
-
-return {
-  {
-    "LintaoAmons/context-menu.nvim",
-    opts = function(_, opts)
-      require("context-menu").setup({
-        menu_items = {
-          {
-            cmd = "Git",
-            order = 85,
-            action = {
-              type = "sub_cmds",
-              sub_cmds = {
-                {
-                  cmd = "Commit Log Diagram",
-                  order = 86,
-                  action = {
-                    type = "callback",
-                    callback = function(_)
-                      vim.cmd([[Flog]])
-                    end,
-                  },
-                },
-                {
-                  cmd = "Git :: Blame",
-                  order = 85,
-                  action = {
-                    type = "callback",
-                    callback = function(_)
-                      vim.cmd([[Gitsigns blame]])
-                    end,
-                  },
-                },
-                {
-                  cmd = "Git :: Peek",
-                  order = 80,
-                  action = {
-                    type = "callback",
-                    callback = function(_)
-                      vim.cmd([[Gitsigns preview_hunk]])
-                    end,
-                  },
-                },
-                {
-                  cmd = "Git :: Reset Hunk",
-                  order = 81,
-                  action = {
-                    type = "callback",
-                    callback = function(_)
-                      vim.cmd([[Gitsigns reset_hunk]])
-                    end,
-                  },
-                },
-                {
-                  cmd = "Git :: Reset Buffer",
-                  order = 82,
-                  action = {
-                    type = "callback",
-                    callback = function(_)
-                      vim.cmd([[Gitsigns reset_buffer]])
-                    end,
-                  },
-                },
-                {
-                  cmd = "Git :: Diff Current Buffer",
-                  order = 83,
-                  action = {
-                    type = "callback",
-                    callback = function(_)
-                      require("gitsigns").diffthis()
-                    end,
-                  },
-                },
-              },
-            },
-          },
-        },
-      })
-    end,
-  },
-  -- git signs highlights text that has changed since the list
-  -- git commit, and also lets you interactively stage & unstage
-  -- hunks in a commit.
-  {
-    "lewis6991/gitsigns.nvim",
-    opts = {
-      signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" },
-        untracked = { text = "▎" },
-      },
-    },
-  },
-}
-```
-
-2. diffview.lua
-
-```lua title="diffview.lua"
-
-return {
-"LintaoAmons/context-menu.nvim",
-opts = function()
-  require("context-menu").setup({
-    menu_items = {
-      {
-        cmd = "Git",
-        action = {
-          type = "sub_cmds",
-          sub_cmds = {
-            {
-              cmd = "Git Status",
-              action = {
-                type = "callback",
-                callback = function(_)
-                  vim.cmd([[DiffviewOpen]])
-                end,
-              },
-            },
-            {
-              cmd = "Branch History",
-              action = {
-                type = "callback",
-                callback = function(_)
-                  vim.cmd([[DiffviewFileHistory]])
-                end,
-              },
-            },
-            {
-              cmd = "Current File Commit History",
-              action = {
-                type = "callback",
-                callback = function(_)
-                  vim.cmd([[DiffviewFileHistory %]])
-                end,
-              },
-            },
-          },
-        },
-      },
-    },
-  })
-end,
-}
-```
-
-</details>
-
-### Json | Jq
-
-> [config ref](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/lang/json.lua)
-
-![cm-jq](https://github.com/user-attachments/assets/6b4212e1-2122-4ad1-bd66-3e1f72864b1a)
-
-<details>
-<summary>Config</summary>
-
-```lua
-return {
-  "LintaoAmons/context-menu.nvim",
-  opts = function(_, opts)
-    require("context-menu").setup({
-      menu_items = {
-        {
-          cmd = "Jq Query",
-          ft = { "json" },
-          action = {
-            type = "callback",
-            callback = function(_)
-              -- you can find those util function in my config repository
-              local sys = require("util.base.sys")
-              local editor = require("util.editor")
-
-              vim.ui.input(
-                { prompt = 'Query pattern, e.g. `.[] | .["@message"].message` ' },
-                function(pattern)
-                  local absPath = editor.buf.read.get_buf_abs_path()
-                  local stdout, _, stderr = sys.run_sync({ "jq", pattern, absPath }, ".")
-                  local result = stdout or stderr
-                  editor.split_and_write(result, { vertical = true, ft = "json" })
-                end
-              )
-            end,
-          },
-        },
-      },
-    })
-  end,
-}
-```
-
-</details>
-
-### Copy
-
-> [config ref](https://github.com/LintaoAmons/CoolStuffes/blob/main/nvim/.config/nvim/lua/plugins/editor-enhance/copy.lua)
-
-![cm-copy](https://github.com/user-attachments/assets/6b59dbbb-594d-41a7-a610-eeb22b332ba1)
+- [git](./modules/git.lua)
+- [http request](./modules/http.lua)
 
 ## CONTRIBUTING
 
