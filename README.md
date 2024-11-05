@@ -174,6 +174,7 @@ end, {})
 - [git](./modules/git.lua)
 - [http request](./modules/http.lua)
 - [markdown](./modules/markdown.lua)
+- [test](./modules/test.lua)
 
 ## CONTRIBUTING
 
