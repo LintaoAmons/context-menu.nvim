@@ -41,6 +41,7 @@ local function hilight_column(bufnr)
   local line_count = vim.api.nvim_buf_line_count(bufnr)
 
   -- TODO: this is a hack, need to find a better way to do this
+  -- use markdown syntax and get highlight by markdown highlight
   local end_col = Item.MAX_LENGTH
   for i = 1, line_count do
     vim.api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 0, {
