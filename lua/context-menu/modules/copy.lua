@@ -29,7 +29,6 @@ vim.api.nvim_create_user_command("CopyLineRef", copy_line_ref, {})
 
 local function copy_buf_name()
   local buf_name = vim.fn.expand("%:p:t")
-  vim.print(buf_name)
   vim.fn.setreg("+", buf_name)
   return buf_name
 end
@@ -37,7 +36,6 @@ vim.api.nvim_create_user_command("CopyBufName", copy_buf_name, {})
 
 local function copy_buf_abs_path()
   local abs_path = require("util.editor").buf.read.get_buf_abs_path()
-  vim.print(abs_path)
   vim.fn.setreg("+", abs_path)
   return abs_path
 end
@@ -45,7 +43,6 @@ vim.api.nvim_create_user_command("CopyBufAbsPath", copy_buf_abs_path, {})
 
 local function copy_buf_abs_dir_path()
   local result = require("util.editor").buf.read.get_buf_abs_dir_path()
-  vim.print(result)
   vim.fn.setreg("+", result)
   return result
 end
@@ -53,7 +50,6 @@ vim.api.nvim_create_user_command("CopyBufAbsDirPath", copy_buf_abs_dir_path, {})
 
 local function copy_buf_relative_dir_path()
   local result = require("util.editor").buf.read.get_buf_relative_dir_path()
-  vim.print(result)
   vim.fn.setreg("+", result)
   return result
 end

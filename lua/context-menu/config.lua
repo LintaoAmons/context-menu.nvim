@@ -1,70 +1,81 @@
 local M = {}
 
+---@type ContextMenu.Item
+M.root = {
+  name = "root",
+  items = {},
+}
+
 ---merge Items
----@param t1 ContextMenu.Items
----@param t2 ContextMenu.Items
----@return ContextMenu.Items
-local function merge_cmds(t1, t2)
-  local result = {}
-  -- Create a lookup table for the second table for quick access
-  local t2_lookup = {}
-  for _, item in ipairs(t2) do
-    t2_lookup[item.cmd] = item
-  end
+---@param config1 ContextMenu.Item
+---@param config2 ContextMenu.Item
+---@return ContextMenu.Item
+local function merge(config1, config2)
+  -- create new table for result
+  local result = vim.deepcopy(config1)
 
-  -- Iterate over the first table
-  for _, item1 in ipairs(t1) do
-    local item2 = t2_lookup[item1.cmd]
+  -- merge or override properties
+  for k, v in pairs(config2) do
+    if k == "items" then
+      -- handle subs array specially
+      local items = {}
+      local item_map = {}
 
-    if item2 then
-      if not item1.action then
-        error("Action is not found in menu_item [" .. item1.cmd .. "]")
-      end
-      if not item2.action then
-        error("Action is not found in menu_item [" .. item2.cmd .. "]")
+      -- add all sub items from config1 first
+      for _, item in ipairs(config1.items or {}) do
+        table.insert(items, item)
+        item_map[item.name] = #items
       end
 
-      local merged_item = item1
-
-      if item1.action.sub_cmds and item2.action.sub_cmds then
-        merged_item.action.sub_cmds = merge_cmds(item1.action.sub_cmds, item2.action.sub_cmds)
-      elseif item1.action.sub_cmds or item2.action.sub_cmds then
-        merged_item.action.sub_cmds = item1.action.sub_cmds or item2.action.sub_cmds
-      else
-        merged_item.action = item2.action
-      end
-
-      for k, v in pairs(item2) do
-        if k ~= "action" then
-          merged_item[k] = v
+      -- merge or add subs from config2
+      for _, item2 in ipairs(config2.items) do
+        local idx = item_map[item2.name]
+        if idx then
+          -- merge existing sub
+          items[idx] = merge(items[idx], item2)
+        else
+          -- add new sub
+          table.insert(items, vim.deepcopy(item2))
         end
       end
 
-      table.insert(result, merged_item)
-
-      t2_lookup[item1.cmd] = nil -- We used this item2, so remove it from lookup
+      result.items = items
     else
-      table.insert(result, item1)
-    end
-  end
-
-  -- Add remaining items from t2 that weren't matched
-  for _, item in ipairs(t2) do
-    if t2_lookup[item.cmd] then
-      table.insert(result, item)
+      -- for non-subs properties, just override
+      result[k] = vim.deepcopy(v)
     end
   end
 
   return result
 end
 
+---add a menu item
+---@param items ContextMenu.Item[]
+M.add_items = function(items)
+  vim.print("before_merge")
+  vim.print(M.root)
+  local b  = merge(M.root, {
+    name = "root",
+    items = items,
+  })
+  vim.print("after_merge")
+  vim.print(b)
+  M.root = b
+end
+
+---@param opts ContextMenu.Config
 M.setup = function(opts)
   opts = opts or {}
-  local config = vim.deepcopy(vim.g.context_menu_config)
-  if opts.menu_items then
-    config.menu_items = merge_cmds(config.menu_items, opts.menu_items)
-  end
+  ---@type ContextMenu.Config
+  local config = vim.tbl_extend("force", vim.g.context_menu_config, opts)
 
+  for _, module in ipairs(config.modules) do
+    local ok, m = pcall(require, "context-menu.modules." .. module)
+    if ok then
+      table.insert(M.root.items, m)
+    end
+  end
+  vim.print(M.root)
   vim.g.context_menu_config = config
 end
 
