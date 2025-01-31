@@ -6,7 +6,6 @@ local Item = {}
 ---@param init_value ContextMenu.ItemStruct
 ---@return ContextMenu.Item
 function Item.new(init_value)
-  Snacks.debug.inspect(init_value)
   local self = {
     name = init_value.name,
     action = init_value.action,
