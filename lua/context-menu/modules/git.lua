@@ -17,6 +17,7 @@ return {
         end,
       },
       {
+        order = 1,
         name = "Project Histories",
         action = function()
           vim.cmd([[VGit project_logs_preview]])
@@ -36,6 +37,7 @@ return {
       },
       {
         name = "Buffer Histories",
+        order = 2,
         action = function()
           vim.cmd([[VGit buffer_diff_preview]])
         end,

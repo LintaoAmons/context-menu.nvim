@@ -61,7 +61,7 @@ function Item:get_items(filter, order)
     end
   end
 
-  Snacks.debug.log("before ", filtered_items)
+  -- Snacks.debug.log("before ", filtered_items)
   -- Sort items
   table.sort(filtered_items, function(a, b)
     local a_order = a.order or 99
@@ -72,7 +72,7 @@ function Item:get_items(filter, order)
       return a_order < b_order
     end
   end)
-  Snacks.debug.log("after ", filtered_items)
+  -- Snacks.debug.log("after ", filtered_items)
 
   return filtered_items
 end
