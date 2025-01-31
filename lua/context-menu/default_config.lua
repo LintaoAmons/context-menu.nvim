@@ -1,4 +1,4 @@
 ---@type ContextMenu.Config
 return {
-  modules = { "git", "http" },
+  modules = { "git", "http", "markdown", "test", "copy" },
 }

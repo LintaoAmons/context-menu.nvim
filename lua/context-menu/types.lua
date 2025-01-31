@@ -7,7 +7,7 @@
 ---@field menu_buffer_stack number[]
 ---@field menu_window_stack number[]
 
----@alias ContextMenu.Modules "git"|"http"
+---@alias ContextMenu.Modules "git"|"http"|"markdown"|"test"|"copy"
 
 ---@class ContextMenu.Config
 ---@field modules ContextMenu.Modules[]
@@ -21,6 +21,4 @@
 ---@field ft? string[] Optional list of filetypes that determine menu item visibility.
 ---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
 ---@field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
----order
----@field fix? number Optional, fix the order of the menu item.
 ---@field order? number Optional, order of the menu item.
