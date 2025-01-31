@@ -12,10 +12,10 @@
 ---@class ContextMenu.Config
 ---@field modules ContextMenu.Modules[]
 
----@class ContextMenu.Item
+---@class ContextMenu.ItemStruct
 ---@field name string **Unique identifier** and display name for the menu item.
 ---@field action? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
----@field items? ContextMenu.Item[] sub items
+---@field items? ContextMenu.ItemStruct[] sub items
 ---@field keymap? string Optional, local keymap in menu
 ---filter
 ---@field ft? string[] Optional list of filetypes that determine menu item visibility.

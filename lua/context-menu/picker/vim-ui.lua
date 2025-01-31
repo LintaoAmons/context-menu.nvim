@@ -3,13 +3,9 @@ local M = {}
 ---@param item?  ContextMenu.Item
 M.select = function(item)
   item = item or require("context-menu.config").root
-  local items = {}
-  for _, i in ipairs(item.items) do
-    table.insert(items, i)
-  end
 
   vim.ui.select(
-    items,
+    item:get_items(), -- TODO: filter by ctx
     {
       prompt = "Select tabs or spaces:",
       format_item = function(i)
