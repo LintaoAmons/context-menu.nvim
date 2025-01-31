@@ -1,6 +1,7 @@
 ---@type ContextMenu.ItemStruct[]
 return {
   {
+    order = 5,
     name = "Git: Project Diff",
     action = function()
       vim.cmd([[VGit project_diff_preview]])

@@ -29,12 +29,13 @@ function Item.new(init_value)
   return self
 end
 
----Get the sub items of this item
+---Get the direct sub items of this item
 ---@param filter? {ft?: string, not_ft?: string, filter_func?: function, }
 ---@param order? "desc"|"asc"
 ---@return ContextMenu.Item[]
 function Item:get_items(filter, order)
   filter = filter or {}
+  order = order or "asc"
   local filtered_items = {}
 
   -- Filter items
@@ -61,18 +62,18 @@ function Item:get_items(filter, order)
     end
   end
 
+  Snacks.debug.log("before ", filtered_items)
   -- Sort items
-  if order then
-    table.sort(filtered_items, function(a, b)
-      local a_order = a.fix or a.order or 99
-      local b_order = b.fix or b.order or 99
-      if order == "desc" then
-        return a_order > b_order
-      else
-        return a_order < b_order
-      end
-    end)
-  end
+  table.sort(filtered_items, function(a, b)
+    local a_order = a.order or 99
+    local b_order = b.order or 99
+    if order == "desc" then
+      return a_order > b_order
+    else
+      return a_order < b_order
+    end
+  end)
+  Snacks.debug.log("after ", filtered_items)
 
   return filtered_items
 end
