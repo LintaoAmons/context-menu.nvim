@@ -26,7 +26,7 @@ M.setup = function(opts)
   for _, module in ipairs(config.modules) do
     local ok, m = pcall(require, "context-menu.modules." .. module)
     if ok then
-      -- Snacks.debug.inspect(m)
+      -- -- Snacks.debug.inspect(m)
       M.add_items(m)
     end
   end

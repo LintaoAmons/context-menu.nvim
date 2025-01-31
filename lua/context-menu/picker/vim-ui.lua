@@ -1,11 +1,16 @@
+local Ctx = require("context-menu.ctx")
+local root = require("context-menu.config").root
+
 local M = {}
 
 ---@param item?  ContextMenu.Item
 M.select = function(item)
-  item = item or require("context-menu.config").root
+  item = item or root
+  local ctx = Ctx.new()
 
+  -- Snacks.debug.inspect(ctx)
   vim.ui.select(
-    item:get_items(), -- TODO: filter by ctx
+    item:get_items(ctx),
     {
       prompt = "Select tabs or spaces:",
       format_item = function(i)
@@ -17,7 +22,7 @@ M.select = function(item)
       if not choice.action then
         M.select(choice)
       else
-        choice.action({}) -- TODO: pass in ctx
+        choice.action(ctx)
       end
     end
   )

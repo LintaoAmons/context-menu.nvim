@@ -8,6 +8,7 @@ return {
   },
   {
     name = "Markdown",
+    ft = { "markdown" },
     items = {
       {
         name = "Preview",

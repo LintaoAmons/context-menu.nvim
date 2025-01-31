@@ -1,4 +1,4 @@
----@class ContextMenu.Context
+---@class ContextMenu.CtxStruct
 ---@field buffer number buffer number where triggered the menu
 ---@field window number window number where triggered the menu
 ---@field line string content of current line when trigger the menu
@@ -14,11 +14,11 @@
 
 ---@class ContextMenu.ItemStruct
 ---@field name string **Unique identifier** and display name for the menu item.
----@field action? fun(context: ContextMenu.Context): nil Function executed upon menu item selection, with context provided.
+---@field action? fun(context: ContextMenu.CtxStruct): nil Function executed upon menu item selection, with context provided.
 ---@field items? ContextMenu.ItemStruct[] sub items
 ---@field keymap? string Optional, local keymap in menu
 ---filter
 ---@field ft? string[] Optional list of filetypes that determine menu item visibility.
 ---@field not_ft? string[] Optional list of filetypes that exclude the menu item's display.
----@field filter_func? fun(context: ContextMenu.Context): boolean Optional, true will remain, false will be filtered out
+---@field filter_func? fun(context: ContextMenu.CtxStruct): boolean Optional, true will remain, false will be filtered out
 ---@field order? number Optional, order of the menu item.

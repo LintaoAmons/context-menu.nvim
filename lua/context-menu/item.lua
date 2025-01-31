@@ -29,39 +29,46 @@ function Item.new(init_value)
 end
 
 ---Get the direct sub items of this item
----@param filter? {ft?: string, not_ft?: string, filter_func?: function, }
+---@param ctx? ContextMenu.CtxStruct
 ---@param order? "desc"|"asc"
 ---@return ContextMenu.Item[]
-function Item:get_items(filter, order)
-  filter = filter or {}
+function Item:get_items(ctx, order)
+  ctx = ctx or {}
+  -- Snacks.debug.inspect(ctx)
   order = order or "asc"
   local filtered_items = {}
 
   -- Filter items
   for _, item in ipairs(self.items) do
+    -- Snacks.debug.inspect("===============================start===============================")
+    -- Snacks.debug.inspect(item)
     local should_include = true
 
     -- Check filetype inclusion
-    if filter.ft and item.ft then
-      should_include = vim.tbl_contains(item.ft, filter.ft)
+    if item.ft and #item.ft > 0 then
+      should_include = vim.tbl_contains(item.ft, ctx.ft or "")
     end
+    -- Snacks.debug.inspect("after inclusion check", should_include)
 
     -- Check filetype exclusion
-    if should_include and filter.not_ft and item.not_ft then
-      should_include = not vim.tbl_contains(item.not_ft, filter.not_ft)
+    if should_include and item.not_ft and #item.not_ft > 0 then
+      should_include = not vim.tbl_contains(item.not_ft, ctx.ft or "")
     end
+    -- Snacks.debug.inspect("after exclusion check", should_include)
 
     -- Apply custom filter function
-    if should_include and filter.filter_func and item.filter_func then
-      should_include = filter.filter_func(item)
+    if should_include and item.filter_func then
+      should_include = item.filter_func(ctx)
     end
+    -- Snacks.debug.inspect("after filter_func", should_include)
 
     if should_include then
       table.insert(filtered_items, item)
     end
+    -- Snacks.debug.inspect("single round", filtered_items)
   end
 
-  -- Snacks.debug.log("before ", filtered_items)
+  -- Snacks.debug.inspect("after filter", filtered_items)
   -- Sort items
   table.sort(filtered_items, function(a, b)
     local a_order = a.order or 99
@@ -72,7 +79,7 @@ function Item:get_items(filter, order)
       return a_order < b_order
     end
   end)
-  -- Snacks.debug.log("after ", filtered_items)
+  -- -- Snacks.debug.log("after ", filtered_items)
 
   return filtered_items
 end
