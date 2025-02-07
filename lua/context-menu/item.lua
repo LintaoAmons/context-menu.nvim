@@ -73,11 +73,27 @@ function Item:get_items(ctx, order)
   table.sort(filtered_items, function(a, b)
     local a_order = a.order or 99
     local b_order = b.order or 99
-    if order == "desc" then
-      return a_order > b_order
-    else
-      return a_order < b_order
+    -- If orders are different, sort by order
+    if a_order ~= b_order then
+      if order == "desc" then
+        return a_order > b_order
+      else
+        return a_order < b_order
+      end
     end
+
+    -- If orders are equal, prioritize matching filetype
+    local a_matches_ft = a.ft and vim.tbl_contains(a.ft, ctx.ft or "")
+    local b_matches_ft = b.ft and vim.tbl_contains(b.ft, ctx.ft or "")
+
+    if a_matches_ft and not b_matches_ft then
+      return true
+    elseif not a_matches_ft and b_matches_ft then
+      return false
+    end
+
+    -- If both match or don't match ft, maintain stable sort
+    return false
   end)
   -- -- Snacks.debug.log("after ", filtered_items)
 

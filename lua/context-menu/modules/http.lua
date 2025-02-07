@@ -2,7 +2,7 @@
 return {
   {
     name = "Send HTTP Request",
-    fix = 1,
+    order = 1,
     ft = { "http" },
     action = function(_)
       require("kulala").run()
@@ -13,7 +13,6 @@ return {
     items = {
       {
         name = "Send HTTP Request",
-        fix = 1,
         ft = { "http" },
         action = function(_)
           require("kulala").run()
@@ -21,7 +20,6 @@ return {
       },
       {
         name = "Re Run HTTP Request",
-        fix = 1,
         ft = { "http" },
         action = function(_)
           require("kulala").replay()
@@ -29,7 +27,6 @@ return {
       },
       {
         name = "Copy as Curl",
-        fix = 1,
         ft = { "http" },
         action = function(_)
           require("kulala").copy()
@@ -37,7 +34,6 @@ return {
       },
       {
         name = "Import from Curl",
-        fix = 1,
         ft = { "http" },
         action = function(_)
           require("kulala").from_curl()
