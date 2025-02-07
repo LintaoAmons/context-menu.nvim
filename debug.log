@@ -1,0 +1,43 @@
+2025-01-31 15:53:59 {
+  buffer = 18,
+  filename = "/Volumes/t7ex/Documents/oatnil/vim/context-menu.nvim/lua/context-menu/modules/markdown.lua",
+  ft = "lua",
+  line = "return {",
+  menu_buffer_stack = {},
+  menu_window_stack = {},
+  window = 1000,
+  <metatable> = {
+    __index = {
+      new = <function 1>
+    }
+  }
+}
+2025-01-31 15:55:51 {}
+2025-01-31 15:57:36 {
+  buffer = 38,
+  filename = "/Volumes/t7ex/Documents/oatnil/vim/context-menu.nvim/debug.log",
+  ft = "",
+  line = "2025-01-31 15:53:59 {",
+  menu_buffer_stack = {},
+  menu_window_stack = {},
+  window = 1000,
+  <metatable> = {
+    __index = {
+      new = <function 1>
+    }
+  }
+}
+2025-01-31 15:57:36 {
+  buffer = 38,
+  filename = "/Volumes/t7ex/Documents/oatnil/vim/context-menu.nvim/debug.log",
+  ft = "",
+  line = "2025-01-31 15:53:59 {",
+  menu_buffer_stack = {},
+  menu_window_stack = {},
+  window = 1000,
+  <metatable> = {
+    __index = {
+      new = <function 1>
+    }
+  }
+}
