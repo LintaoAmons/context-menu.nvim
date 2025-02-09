@@ -82,9 +82,13 @@ No default keymaps, you need to set the shortcut by yourself, here's a reference
 
 ```lua
 vim.keymap.set({ "v", "n" }, "<M-l>", function()
-  require("context-menu").trigger_context_menu()
+  require("context-menu.picker.vim-ui").select()
 end, {})
+
+-- or
+vim.keymap.set({ "v", "n" }, "<M-l>", "ContextMenuTrigger", {})
 ```
+
 ## CONTRIBUTING
 
 Don't hesitate to ask me anything about the codebase if you want to contribute.
@@ -97,4 +101,3 @@ By [telegram](https://t.me/+ssgpiHyY9580ZWFl) or [微信: CateFat](https://linta
 - [cd-project.nvim](https://github.com/LintaoAmons/cd-project.nvim)
 - [bookmarks.nvim](https://github.com/LintaoAmons/bookmarks.nvim)
 - [context-menu.nvim](https://github.com/LintaoAmons/context-menu.nvim)
-
