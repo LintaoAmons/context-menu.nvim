@@ -48,6 +48,24 @@ return {
           vim.cmd([[VGit buffer_blame_preview]])
         end,
       },
+      {
+        name = "Open in github",
+        action = function()
+          Snacks.gitbrowse()
+        end,
+      },
+      {
+        name = "Reset Hunk",
+        action = function(_)
+          vim.cmd([[VGit buffer_hunk_reset]])
+        end,
+      },
+      {
+        name = "Reset Buffer",
+        action = function(_)
+          vim.cmd([[VGit buffer_reset]])
+        end,
+      },
     },
   },
 }
