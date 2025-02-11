@@ -39,6 +39,13 @@ return {
           require("kulala").from_curl()
         end,
       },
+      {
+        name = "Select Environment Variables",
+        ft = { "http" },
+        action = function(_)
+          require("kulala").set_selected_env()
+        end,
+      },
     },
   },
 }
