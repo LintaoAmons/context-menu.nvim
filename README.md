@@ -34,46 +34,34 @@ return {
   "LintaoAmons/context-menu.nvim",
   config = function(_, opts)
     require("context-menu").setup({
-      -- enable predefined modules:
+      -- Available predefined modules:
       -- "git"|"http"|"markdown"|"test"|"copy"
-      modules = {},
+      modules = {
+        "git",       -- Module implementations can be found in `lua/context-menu/modules`
+                     -- To check the dependencies of the module, e.g. git module requires VGit.nvim
+        "copy",      -- Remove any predefined modules you don't need
+        "markdown",  -- Reference existing modules to learn how to create your own
+        "http",      -- http module requires kulala.nvim
+      },
+    })
+
+    -- Add custom menu items
+    -- This method can be called from any location to modularize your configuration
+    -- Items can be modified at runtime to simplify configuration and debugging
+    require("context-menu").add_items({
+      {
+        order = 1, -- Lower numbers indicate higher priority
+        name = "Code Action", -- Display name in the menu
+        -- Additional filters are defined in `lua/context-menu/types.lua`
+        -- Options include ft, not_ft, and filter_func
+        not_ft = { "markdown", "toggleterm" }, -- Hide item for specified filetypes
+        action = function(_) -- Function executed when item is selected
+          vim.lsp.buf.code_action()
+        end,
+      },
     })
   end,
 }
-```
-
-### Add new context-menu items
-
-> An simple example to add new add_items
-> Share yours in the Discussion
-
-```lua
-require("context-menu").add_items({
-  {
-    order = 1,
-    name = "Code Action",
-    not_ft = { "markdown", "toggleterm" },
-    action = function(_)
-      vim.lsp.buf.code_action()
-    end,
-  },
-  {
-    order = 2,
-    name = "Run Test",
-    not_ft = { "markdown" },
-    filter_func = function(context)
-      local a = context.filename
-      if string.find(a, ".test.") or string.find(a, "spec.") then
-        return true
-      else
-        return false
-      end
-    end,
-    action = function(_)
-      require("neotest").run.run()
-    end,
-  },
-})
 ```
 
 ## Keymaps
