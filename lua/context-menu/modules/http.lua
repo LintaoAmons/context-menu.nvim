@@ -10,6 +10,7 @@ return {
   },
   {
     name = "HTTP",
+    ft = { "http" },
     items = {
       {
         name = "Send HTTP Request",

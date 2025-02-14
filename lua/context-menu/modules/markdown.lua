@@ -1,6 +1,8 @@
+---@type ContextMenu.ItemStruct[]
 return {
   {
     name = "Markdown Preview",
+    order = 1,
     ft = { "markdown" },
     action = function(_)
       vim.cmd([[MarkdownPreview]])
@@ -8,6 +10,7 @@ return {
   },
   {
     name = "Markdown",
+    order = 2,
     ft = { "markdown" },
     items = {
       {
