@@ -25,6 +25,7 @@ Without handruds of keybindings, `trigger ctx-menu then select the first item` i
   ![context-menu for json](https://github.com/user-attachments/assets/6854fe18-d6c5-4c1a-848a-af6cb33dab27)
 
 - Send Http request in http buffer
+![context-menu for http](https://github.com/user-attachments/assets/6d6d60e4-fc6f-4366-bbad-5aacdcc02a91)
 
 ## Philosophy
 
