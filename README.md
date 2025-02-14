@@ -10,15 +10,15 @@
   <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#usecases">Usecases</a>
 </p>
 
-Instead of keymaps, you can put your actions in the context menu
+Without handruds of keybindings, `trigger ctx-menu then select the first item` is all you need
 
-- Menu is a buffer, use hjkl to navigate the items and trigger it or just trigger it by the number
 - Build your own menu, (items order) and (display or hide) are easily configurable
 - Split you config in multiple places, encapsulating those item in its own place
 - Adjust your config at runtime, simply source the setup function again
-- Local keymaps of the items
+- built-in modules, start with ease
 
-![show](https://github.com/user-attachments/assets/48cc708a-f989-4d66-9b0a-16e36ac8620d)
+- Jq in json ctx
+![context-menu for json](https://github.com/user-attachments/assets/6854fe18-d6c5-4c1a-848a-af6cb33dab27)
 
 ## Philosophy
 
