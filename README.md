@@ -3,6 +3,8 @@
 > This plugin is in its early stages, and the data structures is like to undergo significant changes over time.
 
 <p align="center">
+  <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#usecases">Usecases</a>
+  ·
   <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#philosophy">Philosophy</a>
   ·
   <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#install--configuration">Install & Configuration</a>
@@ -17,8 +19,12 @@ Without handruds of keybindings, `trigger ctx-menu then select the first item` i
 - Adjust your config at runtime, simply source the setup function again
 - built-in modules, start with ease
 
-- Jq in json ctx
+## Usecases
+
+- Run Jq query in json buffer
   ![context-menu for json](https://github.com/user-attachments/assets/6854fe18-d6c5-4c1a-848a-af6cb33dab27)
+
+- Send Http request in http buffer
 
 ## Philosophy
 
