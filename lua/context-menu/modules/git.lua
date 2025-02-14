@@ -18,9 +18,16 @@ return {
       },
       {
         order = 1,
-        name = "Project Histories",
+        name = "Project Histories :: VGit",
         action = function()
           vim.cmd([[VGit project_logs_preview]])
+        end,
+      },
+      {
+        order = 1,
+        name = "Project Histories :: Diffview",
+        action = function()
+          vim.cmd([[DiffviewFileHistory]])
         end,
       },
       {
@@ -39,7 +46,7 @@ return {
         name = "Buffer Histories",
         order = 2,
         action = function()
-          vim.cmd([[VGit buffer_diff_preview]])
+          vim.cmd([[VGit buffer_history_preview]])
         end,
       },
       {

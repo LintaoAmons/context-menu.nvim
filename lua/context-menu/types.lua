@@ -7,7 +7,7 @@
 ---@field menu_buffer_stack number[]
 ---@field menu_window_stack number[]
 
----@alias ContextMenu.Modules "git"|"http"|"markdown"|"test"|"copy"
+---@alias ContextMenu.Modules "git"|"http"|"markdown"|"test"|"copy"|"json"
 
 ---@class ContextMenu.Config
 ---@field modules ContextMenu.Modules[]
