@@ -18,7 +18,7 @@ Without handruds of keybindings, `trigger ctx-menu then select the first item` i
 - built-in modules, start with ease
 
 - Jq in json ctx
-![context-menu for json](https://github.com/user-attachments/assets/6854fe18-d6c5-4c1a-848a-af6cb33dab27)
+  ![context-menu for json](https://github.com/user-attachments/assets/6854fe18-d6c5-4c1a-848a-af6cb33dab27)
 
 ## Philosophy
 
@@ -35,13 +35,14 @@ return {
   config = function(_, opts)
     require("context-menu").setup({
       -- Available predefined modules:
-      -- "git"|"http"|"markdown"|"test"|"copy"
+      -- "git"|"http"|"markdown"|"test"|"copy"|"json"
       modules = {
         "git",       -- Module implementations can be found in `lua/context-menu/modules`
                      -- To check the dependencies of the module, e.g. git module requires VGit.nvim
         "copy",      -- Remove any predefined modules you don't need
         "markdown",  -- Reference existing modules to learn how to create your own
         "http",      -- http module requires kulala.nvim
+        "json",      -- jq
       },
     })
 
@@ -54,7 +55,7 @@ return {
         name = "Code Action", -- Display name in the menu
         -- Additional filters are defined in `lua/context-menu/types.lua`
         -- Options include ft, not_ft, and filter_func
-        not_ft = { "markdown", "toggleterm" }, -- Hide item for specified filetypes
+        not_ft = { "markdown", "toggleterm", "json", "http" }, -- Hide item for specified filetypes
         action = function(_) -- Function executed when item is selected
           vim.lsp.buf.code_action()
         end,
