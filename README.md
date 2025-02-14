@@ -12,7 +12,7 @@
   <a href="https://github.com/LintaoAmons/context-menu.nvim?tab=readme-ov-file#usecases">Usecases</a>
 </p>
 
-Without handruds of keybindings, `trigger ctx-menu then select the first item` is all you need
+Without Hundreds of keybindings, `trigger ctx-menu then select the first item` is all you need
 
 - Build your own menu, (items order) and (display or hide) are easily configurable
 - Split you config in multiple places, encapsulating those item in its own place
