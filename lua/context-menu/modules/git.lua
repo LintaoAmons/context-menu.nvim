@@ -1,14 +1,22 @@
 ---@type ContextMenu.ItemStruct[]
 return {
   {
-    order = 5,
-    name = "Git: Project Diff",
+    order = 10,
+    name = "Git: Status",
     action = function()
       vim.cmd([[VGit project_diff_preview]])
     end,
   },
   {
+    order = 11,
+    name = "Git: Add .",
+    action = function()
+      vim.cmd([[!git add .]])
+    end,
+  },
+  {
     name = "Git",
+    order = 19,
     items = {
       {
         name = "Project Diff",
