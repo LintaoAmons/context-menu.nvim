@@ -9,6 +9,13 @@ return {
     end,
   },
   {
+    name = "Re Run Last HTTP Request",
+    order = 1,
+    action = function(_)
+      require("kulala").replay()
+    end,
+  },
+  {
     name = "HTTP",
     ft = { "http" },
     items = {
@@ -45,6 +52,20 @@ return {
         ft = { "http" },
         action = function(_)
           require("kulala").set_selected_env()
+        end,
+      },
+      {
+        name = "Show Statistics of the Last Request",
+        ft = { "http" },
+        action = function(_)
+          require("kulala").show_stats()
+        end,
+      },
+      {
+        name = "Search named request in current buffer",
+        ft = { "http" },
+        action = function(_)
+          require("kulala").search()
         end,
       },
     },
