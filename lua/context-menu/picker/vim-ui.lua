@@ -19,6 +19,10 @@ M.select = function(item)
     },
     ---@param choice ContextMenu.Item
     function(choice)
+      if not choice then
+        return
+      end
+
       if not choice.action then
         M.select(choice)
       else
