@@ -2,7 +2,6 @@
 return {
   {
     name = "Send HTTP Request",
-    order = 1,
     ft = { "http" },
     action = function(_)
       require("kulala").run()
@@ -10,7 +9,6 @@ return {
   },
   {
     name = "Re Run Last HTTP Request",
-    order = 1,
     action = function(_)
       require("kulala").replay()
     end,
