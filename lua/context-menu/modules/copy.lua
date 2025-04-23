@@ -1,6 +1,5 @@
 return {
   {
-    order = 1,
     name = "Copy Line Reference",
     action = function()
       local current_file_dir = vim.fn.expand("%:p:h")
