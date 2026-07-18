@@ -1,36 +1,20 @@
-local Item = require("context-menu.item")
+---Holds the plugin options. No other module stores configuration.
+
 local M = {}
 
----@type ContextMenu.Item
-M.root = Item.new({
-  name = "root",
-  items = {},
-})
+---@type ContextMenu.Config
+M.defaults = {
+  modules = {},
+  picker = "vim-ui",
+  prompt = "Context Menu",
+}
 
----add a menu item
----@param items ContextMenu.ItemStruct[]
-M.add_items = function(items)
-  local new_root = Item.new({
-    name = "root",
-    items = items,
-  })
-  M.root = M.root:merge(new_root)
-end
+---@type ContextMenu.Config
+M.options = vim.deepcopy(M.defaults)
 
----@param opts ContextMenu.Config
-M.setup = function(opts)
-  opts = opts or {}
-  ---@type ContextMenu.Config
-  local config = vim.tbl_extend("force", vim.g.context_menu_config, opts)
-
-  for _, module in ipairs(config.modules) do
-    local ok, m = pcall(require, "context-menu.modules." .. module)
-    if ok then
-      -- -- Snacks.debug.inspect(m)
-      M.add_items(m)
-    end
-  end
-  vim.g.context_menu_config = config
+---@param opts? ContextMenu.Config
+function M.setup(opts)
+  M.options = vim.tbl_deep_extend("force", vim.deepcopy(M.defaults), opts or {})
 end
 
 return M

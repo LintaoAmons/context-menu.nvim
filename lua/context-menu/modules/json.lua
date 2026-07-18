@@ -26,12 +26,13 @@ local function write_into_new_buf(content, opts)
   end
 end
 
----@type ContextMenu.ItemStruct[]
+---@type ContextMenu.Item[]
 return {
   {
     name = "Jq Query",
     order = 1,
     ft = { "json" },
+    deps = { { "exe:jq", msg = "the jq executable is required — e.g. `brew install jq`" } },
     action = function(_)
       vim.ui.input(
         { prompt = 'Query pattern, e.g. `.[] | .["@message"].message` ' },
