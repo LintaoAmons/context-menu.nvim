@@ -38,7 +38,15 @@ return {
       {
         order = 1,
         name = "Project Histories :: Diffview",
-        deps = { { "cmd:DiffviewFileHistory", msg = "diffview.nvim is required — install sindrets/diffview.nvim" } },
+        -- Checked by command name, not repo: `:DiffviewFileHistory` is identical in
+        -- sindrets/diffview.nvim and its maintained fork dlyongemallo/diffview-plus.nvim,
+        -- so name both here rather than making either one the prerequisite.
+        deps = {
+          {
+            "cmd:DiffviewFileHistory",
+            msg = "diffview is required — install sindrets/diffview.nvim or dlyongemallo/diffview-plus.nvim",
+          },
+        },
         action = function()
           vim.cmd([[DiffviewFileHistory]])
         end,
