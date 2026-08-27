@@ -376,7 +376,7 @@ test("menu picker: float position stays fixed across re-renders", function()
   end)
 end)
 
-test("menu picker: search confirms with <CR>, then j/o picks from results", function()
+test("menu picker: search runs the highlighted result on a single <CR>", function()
   local chosen
   menu({
     { name = "Alpha", action = function() end },
@@ -388,10 +388,10 @@ test("menu picker: search confirms with <CR>, then j/o picks from results", func
     chosen = c
   end)
 
-  -- /buffer<CR> confirms the filter, j moves to the second match, o picks it
+  -- /buffer filters, <C-n> moves to the second match, a single <CR> runs it
   -- (fuzzy ranking puts the shorter "Buffer Diff" first, "Buffer Blame" second)
   vim.api.nvim_feedkeys(
-    vim.api.nvim_replace_termcodes("/buffer<CR>jo", true, false, true),
+    vim.api.nvim_replace_termcodes("/buffer<C-n><CR>", true, false, true),
     "x",
     false
   )

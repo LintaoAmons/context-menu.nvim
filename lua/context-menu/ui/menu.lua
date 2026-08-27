@@ -9,9 +9,9 @@
 ---  <Tab>        toggle sub menu
 ---  /            fuzzy search all (nested) items
 ---  <Esc> / q    clear search / close
----While searching: type to filter, <C-n>/<C-p> or arrows to move, <CR>
----confirms the filter — focus returns to the list so j/k/o/<CR> can pick —
----and <Esc> discards the search and goes back to the tree.
+---While searching: type to filter, <C-n>/<C-p> or arrows to move, <CR> runs
+---the highlighted result straight away, and <Esc> discards the search and goes
+---back to the tree.
 
 local Item = require("context-menu.item")
 
@@ -311,6 +311,9 @@ local function menu_picker(entries, opts, on_choice)
   local DOWN = vim.api.nvim_replace_termcodes("<Down>", true, false, true)
 
   ---Live fuzzy search: consumes keys until <CR> (run) or <Esc> (back).
+  ---There is deliberately no "confirm the filter" step: <C-n>/<C-p>/arrows
+  ---already narrow-then-move inside the search, so one <CR> ends the whole
+  ---search-and-pick gesture.
   local function search()
     searching = true
     while not done do
@@ -322,8 +325,9 @@ local function menu_picker(entries, opts, on_choice)
         sel = 1
         break
       elseif ch == "\r" or ch == "\n" then
-        -- confirm the filter: back to normal navigation over the results
-        break
+        -- run the highlighted result; `activate` sets `done`, ending the loop.
+        -- On "(no matches)" it is a no-op and the search keeps capturing keys.
+        activate()
       elseif ch == BS or ch == "\8" or ch == "\127" then
         query = vim.fn.strcharpart(query, 0, vim.fn.strchars(query) - 1)
         sel = 1

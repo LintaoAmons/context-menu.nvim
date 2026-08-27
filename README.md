@@ -212,8 +212,8 @@ Two pickers are built in, selected via `setup({ picker = ... })`:
 | `<Esc>` / `q` | clear search / close |
 
 While searching: type to filter, `<C-n>`/`<C-p>` or arrows to move, `<CR>`
-confirms the filter — focus returns to the result list so `j`/`k`/`o`/`<CR>`
-can pick — and `<Esc>` discards the search and returns to the tree.
+runs the highlighted result straight away (one `<CR>` for the whole
+search-and-pick), and `<Esc>` discards the search and returns to the tree.
 
 For a true right-click experience:
 
